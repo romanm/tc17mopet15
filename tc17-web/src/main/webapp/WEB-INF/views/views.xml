@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+	"-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+	"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+	<definition name="index-old" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/index-old.jspx" />
+	</definition>
+
+<!-- 
+	<definition name="dataAccessFailure" extends="public">
+	<definition name="resourceNotFound" extends="public">
+	<definition name="uncaughtException" extends="public">
+ -->
+	<definition name="dataAccessFailure" extends="tcmopet16_public">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dataAccessFailure.jspx" />
+	</definition>
+
+	<definition name="resourceNotFound" extends="tcmopet16_public">
+		<put-attribute name="body"
+			value="/WEB-INF/views/resourceNotFound.jspx" />
+	</definition>
+
+	<definition name="uncaughtException" extends="tcmopet16_public">
+		<put-attribute name="body"
+			value="/WEB-INF/views/uncaughtException.jspx" />
+	</definition>
+
+	<definition name="tcmopet16_public" extends="tcmopet16_layout">
+		<put-attribute name="title" value="/WEB-INF/views/title.jspx" />
+		<put-attribute name="tilesUrl" value="homeSite" />
+		<put-attribute name="head" value="" />
+		<put-attribute name="sidebar" value="/WEB-INF/views/home-sidebar.jspx" />
+	</definition>
+	<definition name="home" extends="tcmopet16_layout">
+		<put-attribute name="title" value="/WEB-INF/views/title.jspx" />
+		<put-attribute name="tilesUrl" value="homeSite" />
+		<put-attribute name="head" value="" />
+		<put-attribute name="body" value="/WEB-INF/views/home.jspx" />
+		<put-attribute name="sidebar" value="/WEB-INF/views/home-sidebar.jspx" />
+	</definition>
+	<definition name="folder=*" extends="tcmopet16_layout">
+		<put-attribute name="title" value="/WEB-INF/views/title.jspx" />
+		<put-attribute name="tilesUrl" value="folder" />
+		<put-attribute name="head" value="" />
+		<put-attribute name="body" value="/WEB-INF/views/folder/folder.jspx" />
+		<put-attribute name="sidebar" value="/WEB-INF/views/folder/folder-sidebar.jspx" />
+	</definition>
+	<definition name="f=*/study-*=*" extends="tcmopet16_layout">
+		<put-attribute name="title" value="/WEB-INF/views/title.jspx" />
+		<put-attribute name="tilesUrl" value="study" />
+		<put-attribute name="head" value="/WEB-INF/views/study/study-head.jspx" />
+		<put-attribute name="body" value="/WEB-INF/views/study/doc-study-{2}.jspx" />
+		<put-attribute name="sidebar" value="/WEB-INF/views/study/study-sidebar.jspx" />
+	</definition>
+	<definition name="f=*/s=*/cere-*=*" extends="tcmopet15_layout">
+		<put-attribute name="title" value="/WEB-INF/views/title.jspx" />
+		<put-attribute name="tilesUrl" value="regime" />
+		<put-attribute name="head" value="/WEB-INF/views/regime/cere-head.jspx" />
+		<put-attribute name="body" value="/WEB-INF/views/regime/doc-cere-{3}.jspx" />
+		<put-attribute name="sidebar" value="/WEB-INF/views/regime/cere-sidebar.jspx" />
+	</definition>
+	<definition name="f=*/patient=*" extends="tcmopet15_layout">
+		<put-attribute name="title" value="/WEB-INF/views/title.jspx" />
+		<put-attribute name="tilesUrl" value="patient" />
+		<put-attribute name="head" value="/WEB-INF/views/patient/patient-head.jspx" />
+		<put-attribute name="body" value="/WEB-INF/views/patient/doc-patient.jspx" />
+		<put-attribute name="sidebar"
+			value="/WEB-INF/flows/patient-sidebar.jspx" />
+	</definition>
+	<definition name="f=*/p=*/study-*=*" extends="tcmopet15_layout">
+		<put-attribute name="title" value="/WEB-INF/views/title.jspx" />
+		<put-attribute name="tilesUrl" value="p.study" />
+		<put-attribute name="head" value="/WEB-INF/views/study/study-head.jspx" />
+		<put-attribute name="body" value="/WEB-INF/views/study/doc-study-{2}.jspx" />
+		<put-attribute name="sidebar" value="/WEB-INF/views/study/study-sidebar.jspx" />
+	</definition>
+	<definition name="f=*/p=*/s=*/cere-*=*" extends="tcmopet15_layout">
+		<put-attribute name="title" value="/WEB-INF/views/title.jspx" />
+		<put-attribute name="tilesUrl" value="p.regime" />
+		<put-attribute name="head" value="/WEB-INF/views/regime/cere-head.jspx" />
+		<put-attribute name="body" value="/WEB-INF/views/regime/doc-cere-{3}.jspx" />
+		<put-attribute name="sidebar" value="/WEB-INF/views/regime/cere-sidebar.jspx" />
+	</definition>
+	<definition name="tcmopet16_layout" template="/WEB-INF/layouts/tcmopet16.jspx" />
+	<definition name="tcmopet15_layout" template="/WEB-INF/layouts/tcmopet15.jspx" />
+	
+</tiles-definitions>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<jsp:directive.attribute name="historyT"
+		type="org.tasclin1.mopet.domain.Tree" required="true"
+		description="Current folder object" />
+
+	<c:out value=" " />
+	<c:choose>
+		<c:when test="${'bsaType'==historyT.mtlO.unit }" >
+		<span class="small">
+			<c:out value=" (${historyT.pvalueT.mtlO.pvalue }) " />
+		</span>
+		</c:when>
+		<c:when test="${not empty historyT.pvalueT }">
+			<c:out value="${historyT.pvalueT.mtlO.pvalue } " />
+		</c:when>
+		<c:when test="${not empty historyT.ivalueT}">
+			<c:out value="${historyT.ivalueT.mtlO.ivalue } " />
+		</c:when>
+		<c:otherwise>
+			<c:out value="???" />
+		</c:otherwise>
+	</c:choose>
+	<c:choose>
+		<c:when test="${'bsaType'==historyT.mtlO.unit }" />
+		<c:when test="${'yes_no'==historyT.mtlO.unit }" />
+		<c:otherwise>
+			<c:out value=" ${historyT.mtlO.unit} " />
+		</c:otherwise>
+	</c:choose>
+
+</jsp:root>

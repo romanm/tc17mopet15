@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<jsp:directive.attribute name="taskDrugT"
+		type="org.tasclin1.mopet.domain.Tree" required="true"
+		description="Current folder object" />
+
+	<tr>
+		<rg:taskDrugEdit name="td" tree="${taskDrugT }" colspan="3">
+			<rg:task1Text task1T="${taskDrugT}" />
+		</rg:taskDrugEdit>
+
+<!-- 
+		<c:set var="drugDoseT" value="${taskDrugT.drugDoseT}" />
+		<rg:taskDrugEdit name="td" tree="${drugDoseT }">
+			<rg:doseText doseT="${drugDoseT }" />
+		</rg:taskDrugEdit>
+		<td><rg:taskDrugEdit name="span"  idprefix="d2" tree="${drugDoseT }">
+					${drugDoseT.mtlO.app}
+			</rg:taskDrugEdit> 
+			<rg:taskDrugEdit name="span" tree="${taskDrugT.drugAppT }">
+				<rg:appText appT="${taskDrugT.drugAppT}" />
+			</rg:taskDrugEdit></td>
+ -->
+
+		<spring:eval var="drugDayT" expression="taskDrugT.getDrugDayT(0)" />
+		<rg:taskDrugEdit name="td" tree="${drugDayT}">
+			<rg:dayText dayT="${drugDayT }" />
+		</rg:taskDrugEdit>
+		<spring:eval var="drugDayTimesT"
+			expression="drugDayT.getDrugDayTimesT(0)" />
+		<rg:taskDrugEdit name="td" tree="${drugDayTimesT}">
+			<rg:timesText timesT="${drugDayTimesT}" />
+		</rg:taskDrugEdit>
+		<td><rg:timesNr timesT="${drugDayTimesT}" /></td>
+<!-- 
+ -->
+	</tr>
+
+	<!-- 
+	<c:set var="ddNumber" value="1" />
+	<c:forEach var="drugDrugT" items="${taskDrugT.childTs }">
+		<c:if test="${'drug'==drugDrugT.tabName }">
+			<tr>
+				<td class="small">+ ${drugDrugT.mtlO.drug }</td>
+				<c:set var="drugDoseT" value="${drugDrugT.drugDoseT}" />
+				<td class="small">${drugDoseT.mtlO.value} ${drugDoseT.mtlO.unit}</td>
+				<spring:eval var="drugDayT"
+					expression="taskDrugT.getDrugDayT(ddNumber)" />
+				<c:if test="${not empty drugDayT}">
+					<td></td>
+					<rg:taskDrugEdit name="td" tree="${drugDayT}">
+						<rg:dayText dayT="${drugDayT }" />
+					</rg:taskDrugEdit>
+					<spring:eval var="drugDayTimesT"
+						expression="drugDayT.getDrugDayTimesT(0)" />
+					<rg:taskDrugEdit name="td" tree="${drugDayTimesT}">
+						<rg:timesText timesT="${drugDayTimesT}" />
+					</rg:taskDrugEdit>
+					<td><rg:timesNr timesT="${drugDayTimesT}" /></td>
+				</c:if>
+			</tr>
+			<c:set var="ddNumber" value="${ddNumber+1 }" />
+		</c:if>
+	</c:forEach>
+	 -->
+<!-- 
+	<c:if test="${not empty drugNoticeExprM[taskDrugT] }">
+		<tr>
+			<td colspan="5"><c:forEach var="neT"
+					items="${drugNoticeExprM[taskDrugT] }">
+					<span> ${neT.parentT.tabName } <c:choose>
+							<c:when test="${neT.notice }">
+				${neT.mtlO.type}
+				${neT.mtlO.notice }
+						</c:when>
+						</c:choose>
+					</span>
+				</c:forEach></td>
+		</tr>
+	</c:if>
+ -->
+
+</jsp:root>

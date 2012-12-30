@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:security="http://www.springframework.org/security/tags"
+	xmlns:tiles="http://tiles.apache.org/tags-tiles"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime">
+	<jsp:directive.page contentType="text/html; charset=UTF-8"
+		pageEncoding="UTF-8" session="false" />
+	<jsp:output doctype-root-element="html"
+		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+		omit-xml-declaration="true" />
+
+	<c:url var="urlRoot" value="/" scope="application" />
+	<c:set var="contextPath" value="${pageContext.request.contextPath}"
+		scope="application" />
+	<c:set var="locale" value="en" scope="request" />
+	<jsp:directive.page import="javax.servlet.http.Cookie" />
+	<jsp:scriptlet>pageContext.setAttribute("cl", request.getCookies());</jsp:scriptlet>
+	<c:forEach var="c" items="${cl }">
+		<c:if test="${'locale'==c.name }">
+			<c:set var="locale" value="${c.value }" scope="request" />
+		</c:if>
+	</c:forEach>
+	<c:set var="jodaLocale" value="${'ua'==locale?'uk':locale}"
+		scope="request" />
+
+	<jsp:scriptlet>
+		org.joda.time.DateTime now = new org.joda.time.DateTime();
+		now = now.minusMillis(now.getMillisOfDay());
+		pageContext.setAttribute("now", now);
+		//out.print("Hello " + now.millisOfDay().get());
+	</jsp:scriptlet>
+	<c:set var="now" value="${now}" scope="request" />
+	<spring:message var="link_ows1" code="link_ows1" scope="request"/>
+	<spring:message var="link_ows2" code="link_ows2" scope="request"/>
+	
+	<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title><tiles:insertAttribute name="title" /></title>
+<c:url var="faviconIco" value="/resources/images/favicon.ico" />
+<link rel="icon" type="image/x-ico" href="${faviconIco }" />
+<link rel="shortcut icon" type="image/x-icon" href="${faviconIco }" />
+
+<c:url var="tundraCss" value="/resources/dijit/themes/tundra/tundra.css" />
+<link type="text/css" rel="stylesheet" href="${tundraCss }" />
+<c:url var="mopetScreenCss" value="/resources/styles/mopet-screen.css" />
+<link rel="stylesheet" href="${mopetScreenCss }" type="text/css"
+	media="screen, projection" />
+<c:url var="mopetPrintCss" value="/resources/styles/mopet-print.css" />
+<link rel="stylesheet" href="${mopetPrintCss }" type="text/css"
+	media="print" />
+<!-- 
+	<c:url var="screenCss" value="/resources/styles/blueprint/screen.css" />
+	<c:url var="printCss" value="/resources/styles/blueprint/print.css" />
+	<link rel="stylesheet" href="${screenCss }" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="${printCss }" type="text/css" media="print" />
+	<c:url var="ieCss" value="/resources/blueprint/ie.css" />
+	 -->
+<c:url var="ieCss" value="/resources/styles/blueprint/ie.css" />
+<!--[if lt IE 8]>
+	        <link rel="stylesheet" href="${ieCss}" type="text/css" media="screen, projection" />
+	<![endif]-->
+
+<c:url var="dojoJs" value="/resources/dojo/dojo.js" />
+<c:url var="springJs" value="/resources/spring/Spring.js" />
+<c:url var="springDojoJs" value="/resources/spring/Spring-Dojo.js" />
+<script type="text/javascript" src="${dojoJs }">
+<!-- //required for FF3 and Opera -->
+</script>
+<script type="text/javascript" src="${springJs }">
+<!-- //required for FF3 and Opera -->
+</script>
+<script type="text/javascript" src="${springDojoJs }">
+<!-- //required for FF3 and Opera -->
+</script>
+<c:url var="mopetJs" value="/resources/js/mopet.js" />
+<script type="text/javascript" src="${mopetJs }">
+<!-- //required for FF3 and Opera -->
+</script>
+</head>
+<body class="tundra">
+		<input id="urlRoot" type="hidden" name="urlRoot" value="${urlRoot }" />
+		<input id="regimeView" type="hidden" name="regimeView" value="${regimeView}" />
+		<input id="studyView" type="hidden" name="studyView" value="${studyView}" />
+		<c:set var="tilesUrl" scope="request"><tiles:insertAttribute name="tilesUrl" /></c:set>
+		<input id="tilesUrl" type="hidden" name="tilesUrl" value="${tilesUrl}" />
+
+	<div id="headline">
+		<rg:headline />
+	</div>
+	<div id="content">
+		<tiles:insertAttribute name="head" />
+		<tiles:insertAttribute name="body" />
+	</div>
+	<div id="sidebar">
+		<div id="titleInline">
+			<spring:message var="ui_reload" code="ui_reload" />
+			<div class="floatLeft" title="${ui_reload }"
+			style="visibility:${empty docId?'hidden':'visible' };">
+			<a href="${urlRoot }id=${docId}" >
+				<c:url var="imgRefresh" value="/resources/images/refresh.png" />
+				<img src="${imgRefresh}" />
+			</a>
+			</div>
+			<div class="floatRight">
+				<h5> <c:out value="TasClin " /> </h5>
+				<span style="background-color: white;">
+				<img src="${faviconIco}" />
+				</span>
+				<h3> <c:out value="MOPET " /> </h3>
+				<c:out value=" " />
+				<!-- 
+				<c:out value="." />
+				 -->
+				<rg:language locale="${locale}" nolink="true" />
+				<div style="text-align: right">
+					<c:url var="loggedUrl" value="/log" />
+					<security:authorize ifAllGranted="ROLE_USER">
+						<spring:message code="ui_welcome"/>,
+						${pageContext.request.userPrincipal.name}
+						|
+						<a href="${loggedUrl}out"> logout </a>
+					</security:authorize>
+					<security:authorize ifAllGranted="ROLE_ANONYMOUS">
+						<a href="${loggedUrl}in"> login </a>
+					</security:authorize>
+				</div>
+			</div>
+		</div>
+		<div class="clearBoth">
+			<!-- //required for FF3 and Opera -->
+		</div>
+		<tiles:insertAttribute name="sidebar" />
+		<rg:contextMenu/>
+	</div>
+</body>
+	</html>
+</jsp:root>

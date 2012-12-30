@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<jsp:directive.attribute name="task1T"
+		type="org.tasclin1.mopet.domain.Tree" required="true"
+		description="The tree object" />
+
+	<jsp:directive.attribute name="style" type="java.lang.String"
+		required="false" description="Indication style " />
+
+	<c:choose>
+		<c:when test="${task1T.drug }">
+			${task1T.drugO.drug }
+		</c:when>
+		<c:when test="${task1T.labor}">
+			${task1T.laborO.labor }
+		</c:when>
+		<c:when test="${task1T.finding}">
+			<c:choose>
+				<c:when test="${'weight'==task1T.findingO.finding }">
+					<spring:message code="finding_${task1T.findingO.finding}" />
+				</c:when>
+				<c:otherwise>
+			${task1T.findingO.finding }
+				</c:otherwise>
+			</c:choose>
+		</c:when>
+		<c:when test="${task1T.notice}">
+			${task1T.noticeO.notice }
+		</c:when>
+		<c:otherwise>
+			${task1T.mtlO }
+		</c:otherwise>
+	</c:choose>
+</jsp:root>

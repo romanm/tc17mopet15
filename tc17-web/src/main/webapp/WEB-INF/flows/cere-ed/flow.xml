@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/webflow 
+		http://www.springframework.org/schema/webflow/spring-webflow.xsd">
+
+	<secured attributes="ROLE_USER" />
+
+	<var name="model"	class="org.springframework.ui.ExtendedModelMap" />
+
+	<input name="idRegime" required="true" type="int"/>
+	<input name="idt" required="true" type="int"/>
+	<input name="a" required="true" />
+	
+	<on-start>
+		<evaluate expression="mopetService.readRegimeDocT(idRegime,model)" />
+		<evaluate expression="model.asMap().get('regimeTimesTs')"
+		 result="flowScope.regimeTimesTs" />
+		<evaluate expression="model.asMap().get('regimeT')"
+		 result="flowScope.regimeT" />
+		<evaluate expression="model.asMap().get('treeFromId')"
+		 result="flowScope.treeFromId" />
+		<evaluate expression="mopetService.readTaskDrug(idt,model)"
+		 result="flowScope.drugT" />
+		<evaluate expression="taskDrugService.onStart(drugT,idt)"
+		 result="flowScope.taskDrugForm" />
+	</on-start>
+
+	<action-state id="aHandle">
+		<evaluate expression="a"/>
+		<transition on="ed_drug" to="ed_drug" />
+		<transition on="ed_dose" to="ed_dose" />
+		<transition on="ed_day" to="ed_day" />
+		<transition on="ed_times" to="ed_times" />
+	</action-state>
+
+	<view-state id="ed_drug"  model="taskDrugForm"  view="cere/ed_drug">
+		<on-entry>
+			<evaluate expression="taskDrugForm.initTaskDrug()"/>
+		</on-entry>
+		<transition on="next" to="ed_dose"/>
+	</view-state>
+
+	<view-state id="ed_dose"  model="taskDrugForm"  view="cere/ed_dose">
+		<on-entry>
+			<evaluate expression="taskDrugForm.initTaskDrugDose()"/>
+		</on-entry>
+		<transition on="previous" to="ed_drug"/>
+		<transition on="next" to="ed_day"/> 
+	</view-state>
+
+	<action-state id="ed_day">
+		<evaluate expression="taskDrugForm.actionStateDay()"/>
+		<transition on="edDayAbs" to="ed_day_abs"/>
+		<transition on="edDayWeek" to="ed_day_week"/>
+		<transition on="edDayPeriod" to="ed_day_period"/>
+	</action-state>
+
+	<view-state id="ed_day_abs" model="taskDrugForm" view="cere/ed_day_abs">
+		<binder>
+			<binding property="absset" />
+			<binding property="idt" />
+		</binder>
+		<on-entry>
+			<set name="taskDrugForm.type"			value="'a'" />
+			<evaluate expression="taskDrugForm.initAbs()" />
+		</on-entry>
+		<on-render>
+			<render fragments="body" />
+		</on-render>
+		<transition on="previous" to="ed_dose"/>
+		<transition on="next" to="ed_times"/> 
+		<transition on="edDayAbs" to="ed_day_abs"/>
+		<transition on="edDayPeriod" to="ed_day_period"/>
+		<transition on="edDayWeek" to="ed_day_week"/>
+	</view-state>
+
+	<view-state id="ed_day_period" model="taskDrugForm" view="cere/ed_day_period">
+		<binder>
+			<binding property="fromday" />
+			<binding property="totheday" />
+			<binding property="idt" />
+		</binder>
+		<on-entry>
+			<set name="taskDrugForm.type"			value="'p'" />
+			<evaluate expression="taskDrugForm.initPeriod()" />
+		</on-entry>
+		<on-render>
+			<render fragments="body" />
+		</on-render>
+		<transition on="previous" to="ed_dose"/>
+		<transition on="next" to="ed_times"/> 
+		<transition on="edDayAbs" to="ed_day_abs"/>
+		<transition on="edDayPeriod" to="ed_day_period"/>
+		<transition on="edDayWeek" to="ed_day_week"/>
+	</view-state>
+
+	<view-state id="ed_day_week" model="taskDrugForm" view="cere/ed_day_week">
+		<binder>
+			<binding property="idt" />
+		</binder>
+		<on-entry>
+			<set name="taskDrugForm.type"			value="'w'" />
+		</on-entry>
+		<on-render>
+			<render fragments="body" />
+		</on-render>
+		<transition on="previous" to="ed_dose"/>
+		<transition on="next" to="ed_times"/> 
+		<transition on="edDayAbs" to="ed_day_abs"/>
+		<transition on="edDayWeek" to="ed_day_week"/>
+		<transition on="edDayPeriod" to="ed_day_period"/>
+	</view-state>
+
+	<action-state id="ed_times">
+		<evaluate expression="taskDrugForm.actionStateTimes()"/>
+		<transition on="edTimesAbs" to="ed_times_abs"/>
+		<transition on="edTimesRelative" to="ed_times_relative"/>
+		<transition on="edTimesMeal" to="ed_times_meal"/>
+	</action-state>
+
+	<view-state id="ed_times_abs" model="taskDrugForm" view="cere/ed_times_abs">
+		<binder>
+			<binding property="absHourSet" />
+			<binding property="idt" />
+		</binder>
+		<on-entry>
+			<evaluate expression="taskDrugForm.initHourAbs()" />
+		</on-entry>
+		<transition on="previous" to="ed_day"/>
+		<transition on="edTimesAbs" to="ed_times_abs"/>
+		<transition on="edTimesRelative" to="ed_times_relative"/>
+		<transition on="edTimesMeal" to="ed_times_meal"/>
+	</view-state>
+
+	<view-state id="ed_times_relative" model="taskDrugForm" view="cere/ed_times_relative">
+		<binder>
+			<binding property="idt" />
+		</binder>
+		<transition on="previous" to="ed_day"/>
+		<transition on="edTimesAbs" to="ed_times_abs"/>
+		<transition on="edTimesRelative" to="ed_times_relative"/>
+		<transition on="edTimesMeal" to="ed_times_meal"/>
+	</view-state>
+
+	<view-state id="ed_times_meal" model="taskDrugForm" view="cere/ed_times_meal">
+		<binder>
+			<binding property="idt" />
+		</binder>
+		<transition on="previous" to="ed_day"/>
+		<transition on="edTimesAbs" to="ed_times_abs"/>
+		<transition on="edTimesRelative" to="ed_times_relative"/>
+		<transition on="edTimesMeal" to="ed_times_meal"/>
+	</view-state>
+
+	<end-state id="success" view="externalRedirect:id=#{idRegime}?result=success"/>
+	<end-state id="cancel" view="externalRedirect:id=#{idRegime}?result=cancel"/>
+
+	<global-transitions>
+		<transition on="edDrug" to="ed_drug"/>
+		<transition on="edDose" to="ed_dose"/>
+		<transition on="edDay" to="ed_day"/>
+		<transition on="edTimes" to="ed_times"/>
+		<transition on="save" to="success"/>
+		<transition on="cancel" to="cancel"/>
+	</global-transitions>
+
+</flow>

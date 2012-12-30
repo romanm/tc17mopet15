@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<jsp:directive.attribute name="value" type="java.lang.Integer"
+		required="true" description="min|hour value" />
+	<jsp:directive.attribute name="unit" type="java.lang.String"
+		required="false" description="minute|hour min|h" />
+
+	<c:choose>
+		<c:when test="${value>0}">
+			<c:choose>
+				<c:when test="${'min'==unit or 'M'==unit}">
+					<c:choose>
+						<c:when test="${15>=value}">
+							<c:out value="." />
+						</c:when>
+						<c:when test="${30>=value}">
+							<c:out value=".." />
+						</c:when>
+						<c:when test="${45>=value}">
+							<c:out value="..." />
+						</c:when>
+						<c:when test="${60>=value}">
+							<c:out value="${value}${unit }" />
+						</c:when>
+					</c:choose>
+				</c:when>
+				<c:when test="${'h'==unit}">
+					<c:choose>
+						<c:when test="${4>=value}">
+							<c:forEach begin="1" end="${value}">
+								<c:out value="-" />
+							</c:forEach>
+						</c:when>
+						<c:when test="${10>value}">
+							<c:out value="-${value}${unit }-" />
+						</c:when>
+						<c:otherwise>
+							<c:out value="--${value }${unit }--" />
+						</c:otherwise>
+					</c:choose>
+				</c:when>
+			</c:choose>
+		</c:when>
+	</c:choose>
+
+</jsp:root>

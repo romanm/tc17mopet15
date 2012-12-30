@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime">
+
+		<form action="${urlRoot}order" method="post">
+			<input id="up_down" type="hidden" name="up_down" value="up_down" />
+			<input id="docId" type="hidden" name="docId" value="${docId }" />
+			<input id="orderId" type="hidden" name="orderId" value="orderId" />
+			<input id="orderSubmit" type="submit" style="visibility: hidden;" />
+		</form>
+		<form action="${urlRoot}paste" method="post">
+			<input id="docId" type="hidden" name="docId" value="${docId }" />
+			<input id="pasteId" type="hidden" name="pasteId" value="pasteId" />
+			<input id="pasteSubmit" type="submit" style="visibility: hidden;" />
+		</form>
+		<form action="${urlRoot}delete" method="post">
+			<input  type="hidden" name="docId" value="${docId }" />
+			<input id="deleteId" type="hidden" name="deleteId" value="deleteId" />
+			<input id="deleteSubmit" type="submit" style="visibility: hidden;" />
+		</form>
+		<!-- 
+		<form id="readXml" action="${urlRoot}jaxb_drug" class="readXmlForm" method="post">
+			<input id="readXmlSubmit" type="submit" value="Read XML" />
+		</form>
+		 -->
+		<div id="copyIdForLocal" class="">
+		<!-- //required for FF3 and Opera -->
+		</div>
+		<div id="copyClipboard">
+		<!-- //required for FF3 and Opera -->
+		</div>
+		<div id="jaxb">	
+		<!-- //required for FF3 and Opera -->
+		</div>
+
+	<div style="visibility: hidden;">
+		<div id="contextMenuContainer">
+			<rg:menuItem id="cmiDrugInDrug" classes="dijitEditorIcon dijitEditorIconCopy" />
+			<rg:menuItem id="cmiAddDrugDoseNotice" classes="noteIcon" />
+			<rg:menuItem id="cmiAddRule" classes="noteIcon" />
+			<rg:menuSeparator id="cms_openEdit" />
+			<rg:menuItem id="cmiBack" classes="noteIcon" />
+			<rg:menuItem id="cmiOpen" classes="noteIcon" />
+			<rg:menuItem id="cmiOpenInNewTab" classes="noteIcon" />
+			<rg:menuItem id="cmiEdit" classes="noteIcon" />
+		</div>
+		<div id="contextMenu">
+			<rg:menuItem id="cmiCopy" classes="dijitEditorIcon dijitEditorIconCopy" />
+			<rg:menuItem id="cmiPaste" classes="dijitEditorIcon dijitEditorIconPaste" />
+			<rg:menuItem id="cmiDelete" classes="dijitEditorIcon dijitEditorIconDelete" />
+			<rg:menuSeparator id="cm1s1" />
+			<!-- 
+			<rg:menuItem id="cmiUp" classes="dijitEditorIcon dijitEditorIconCopy" />
+			<rg:menuItem id="cmiDown" classes="dijitEditorIcon dijitEditorIconCopy" />
+			 -->
+			<rg:menuItem id="cmiUp" classes="noteIcon" />
+			<rg:menuItem id="cmiDown" classes="noteIcon" />
+			<rg:menuSeparator id="cm1s2" />
+			<rg:menuItem id="cmiJaxb" classes="noteIcon" />
+			<rg:menuItem id="cmiCopyIdForLocal" classes="dijitEditorIcon dijitEditorIconCopy" />
+			<rg:menuItem id="cmiPasteFromRepository" classes="dijitEditorIcon dijitEditorIconPaste" />
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+		Spring.addDecoration(new Spring.ElementDecoration({
+			elementId : "contextMenuContainer",
+			widgetType : "dijit.Menu",
+			widgetAttrs : {
+				style : "display: none;"
+			}
+		}));
+		makeContextMenu(dojo.query('.concept, .choice, .arm, .task, .drug, .dose, .day, .times'));
+		dojo.addOnLoad(function() {
+			initContextMenu();
+		});
+	</script>
+	
+	<div style="visibility: hidden;">tcm14
+		<a id="hiddenBlankLink" href="/" target="_blank">hiddenLink</a>
+		<a id="aPasteFromRepository" 
+			href="/tcm14/importNodeForm?idRegime=1327794&amp;">
+		<!-- 
+		href="/tcm14/pasteFromRepository?idRegime=1327794&amp;a=ed_drug&amp;">
+		href="/tcm14/cere-ed?idRegime=1327794&amp;a=ed_drug&amp;">
+		href="/tcm14/cere-ed?idRegime=1327794&amp;a=ed_drug&amp;idt=1347491">
+		 -->
+			aPasteFromRepository
+		</a>
+		<script type="text/javascript">
+			link2modalDialog("aPasteFromRepository");
+		</script>
+	</div>
+
+</jsp:root>

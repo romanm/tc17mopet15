@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<jsp:directive.attribute name="dayT"
+		type="org.tasclin1.mopet.domain.Tree" required="true"
+		description="The tree object" />
+		
+	<c:out value="${dayT.dayO.abs}" />
+	<c:if test="${not dayT.mtlDayO }">
+		<c:out value="###" />
+	</c:if>
+
+</jsp:root>

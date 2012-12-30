@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:joda="http://www.joda.org/joda/time/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<jsp:directive.attribute name="patientO"
+		type="org.tasclin1.mopet.domain.Patient" required="true"
+		description="Current folder object" />
+	<!-- 
+<c:out value="${patientO.forename}, ${patientO.patient}" />
+ -->
+ <img src="${contextPath }/resources/images/patient16.jpg" />
+	<c:out value="${patientO.patient}, ${patientO.forename}" />
+	<span class="small"> <c:out value=" (${patientO.sex})" />
+	</span>
+	<c:out value=" " />
+	<span class="small"> <c:out value="*" /> <joda:format
+			value="${patientO.birthdateDT}" style="L-" locale="${jodaLocale }"/>
+	</span>
+
+</jsp:root>

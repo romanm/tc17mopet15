@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<jsp:directive.attribute name="conceptT"
+		type="org.tasclin1.mopet.domain.Tree" required="true"
+		description="Current folder object" />
+	<jsp:directive.attribute name="tag" required="true" />
+	<jsp:directive.attribute name="cssClass" required="false" />
+	<jsp:directive.attribute name="linkId" type="java.lang.Integer" required="false" />
+	<jsp:directive.attribute name="withLink" type="java.lang.Boolean" required="false" />
+	<jsp:directive.attribute name="withImg" type="java.lang.Boolean" required="false" />
+
+	<rg:docName docT="${conceptT}" tag="${tag }" cssClass="${cssClass }" 
+			linkId="${linkId }" withImg="${withImg }" withLink="${withLink }"
+	img="History16.gif" 
+	cssDocClass="conceptContent" 
+			>
+		<c:out value="${conceptT.mtlO.protocol }" />
+	</rg:docName>
+
+</jsp:root>

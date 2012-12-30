@@ -1,0 +1,16 @@
+#headline, #sidebar, .noprint
+	{display:none;}
+/*
+a
+	{font-weight:400;text-decoration:none;}
+body
+	{font:90% "Lucida Grande","Lucida Sans Unicode","Lucida",verdana,sans-serif}
+*/
+body {font-family:"Gill Sans MT","Gill Sans",GillSans,Verdana,sans-serif}
+.small{font-size: 0.8em}
+
+tr.planday th, tr.planday td 
+	{border-top: 3px double;}
+a
+	{text-decoration:none;}
+	

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:form="http://www.springframework.org/tags/form"
+>
+<rg:drugForm>
+	<table id="days" class="nowrap">
+		<thead>
+			<tr class="dotted">
+				<th class="small">W</th>
+				<th colspan="4" align="center">Tage</th>
+				<td> <form:checkbox path="absset" value="-3" label="-3" /> </td>
+				<td> <form:checkbox path="absset" value="-2" label="-2" /> </td>
+				<td> <form:checkbox path="absset" value="-1" label="-1" /> </td>
+			</tr>
+		</thead>
+		<tbody>
+			<c:set var="w" value="1"/>
+			<c:forEach begin="1" end="${duration}" var="weekNr" step="7">
+			<tr class="dotted">
+				<th>${w}</th>
+				<c:forEach  var="dayNr" begin="${weekNr}" end="${weekNr + 6}">
+					<td> <form:checkbox path="absset" value="${dayNr }" label="${dayNr }" /> </td>
+				</c:forEach>
+				<c:set var="w" value="${w + 1}"/>
+			</tr>
+			</c:forEach>
+		</tbody>
+	</table>
+</rg:drugForm>
+</jsp:root>

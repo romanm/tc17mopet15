@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	
+	<div class="home">
+		<spring:url value="/folder=" var="folder_url" />
+		basic
+		<div>
+			<a href="${folder_url}${patientF.id}">Patient folder </a>
+		</div>
+		<div>
+			<a href="${folder_url}${protocolF.id}">Study folder </a>
+		</div>
+	</div>
+	<hr />
+	<div>extra
+		<div>
+			<a href="${folder_url}${drugF.id}">Medikament folder </a>
+		</div>
+	</div>
+	<hr />
+	<div>
+		lastUsedDocuments
+		rg:lastUsedDocuments
+	</div>
+
+</jsp:root>

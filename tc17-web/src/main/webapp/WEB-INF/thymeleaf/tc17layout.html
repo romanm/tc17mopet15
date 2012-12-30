@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="headerFragment">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link th:href="@{/styles/mopet-screen.css}" rel="stylesheet" />
+	<link th:href="@{/resources/dijit/themes/tundra/tundra.css}" rel="stylesheet" />
+	<link th:href="@{/resources/images/favicon.ico}" rel="SHORTCUT ICON"/>
+	<script th:attr="src=@{/resources/dojo/dojo.js}" type="text/javascript"/>
+	<script th:attr="src=@{/resources/spring/Spring.js}" type="text/javascript"/>
+	<script th:attr="src=@{/resources/spring/Spring-Dojo.js}" type="text/javascript"/>
+	<script th:attr="src=@{/resources/js/mopet.js}" type="text/javascript"/>
+</head>
+<body>
+
+<div th:fragment="cereEdTable" >
+<table id="ctxTable"
+	th:with="doseFormat='doseUnit'"
+>
+	<thead>
+		<tr>
+			<th th:attr="id=${'regime_'+regimeT.id }" class="task select"
+				th:text="#{regime_tumortherapy}" />
+			<th th:text="#{regime_dose}" /> <th th:text="#{regime_app}" />
+			<th th:text="#{regime_day}" /> <th th:text="#{regime_times}" /> <th>#</th>
+		</tr>
+	</thead>
+	<tbody>
+		<div th:each="drugT : ${regimeT.childTs}"
+			th:if="${'drug'==drugT.tabName}"
+			th:include="thymeleaf/tc17layout :: taskDrugEdTRs " 
+			th:remove="tag">taskDrugEdTRs</div>
+		<div th:each="taskTaskT : ${regimeT.childTs}"
+			th:if="${'task'==taskTaskT.tabName}"
+			th:include="thymeleaf/tc17layout :: taskTaskDrugEdBlock"
+			th:remove="tag"/>
+	</tbody>
+</table>
+</div>
+
+<div th:fragment="taskTaskDrugEdBlock" >
+	<tr>
+		<th colspan="2" th:text="${taskTaskT.taskO.task}"> task name </th>
+	</tr>
+	<div th:each="drugT : ${taskTaskT.childTs}" th:if="${'drug'==drugT.tabName}"
+		th:include="thymeleaf/tc17layout :: taskDrugEdTRs " th:remove="tag"
+	>taskDrugEdTRs</div>
+</div>
+
+<div th:fragment="taskDrugEdTRs">
+	<tr th:with="doseT=${drugT.drugDoseT},drugDayT=${drugT.getDrugDayT(0)},
+	drugDayTimesT=${drugT.getDrugDayTimesT(0)}">
+		<td th:text="${drugT.drugO.drug}" >: drug name :</td>
+		<td th:include="thymeleaf/cere-plan :: doseHtml">: dose :</td>
+		<td><span th:text="${doseT.doseO.app} " />
+			<span th:if="${drugT.drugAppT!=null}" th:with="appT=${drugT.drugAppT}"
+			th:text="${appT.appO.appapp+' '+appT.appO.unit} " />
+		</td>
+		<td> <div th:include="thymeleaf/tc17layout :: dayHtml" th:remove="tag"> : day : </div> </td>
+		<td th:include="thymeleaf/tc17layout :: timesHtml " >: times :</td>
+		<td>#</td>
+	</tr>
+	<tr th:each="drugDrugT : ${drugDrugM.get(drugT)}"
+		th:with="drugDayTimesT=${drugDrugT.getDrugTimesT(drugDrugTStat.count)}"
+	>
+		<td class="small" th:text="${'+'+drugDrugT.drugO.drug}">drug drug name</td>
+		<td class="small" th:with="doseT=${drugDrugT.drugDoseT}"
+			th:include="thymeleaf/cere-plan :: doseHtml"
+		>drug drug dose</td>
+		<td></td>
+		<td><div th:if="${null!=drugDayTimesT and drugDayTimesT.id==drugDayTimesT.parentT.childTs[0].id}"
+				th:include="thymeleaf/tc17layout :: dayHtml" th:remove="tag"
+			>: day :</div>
+		</td>
+		<td th:include="thymeleaf/tc17layout :: timesHtml">: times :</td>
+	</tr>
+	<tr th:each="drugDayTimesT : ${drugTimesM.get(drugT)}"
+		th:if="${drugDayTimesTStat.count > (1+(null!=drugDrugM.get(drugT)?drugDrugM.get(drugT).size():0))}"
+	>
+		<td colspan="3"></td>
+		<td><div th:if="${drugDayTimesT.id==drugDayTimesT.parentT.childTs[0].id}"
+				th:with="drugDayT=${drugDayTimesT.parentT}"
+				th:include="thymeleaf/tc17layout :: dayHtml" th:remove="tag"
+			> : day : </div>
+		</td>
+		<td th:include="thymeleaf/tc17layout :: timesHtml ">: times :</td>
+	</tr>
+	<div th:if="${null!=drugNoticeExprM.get(drugT)}" th:remove="tag">
+	<tr><td colspan="6">
+		<span th:each="neT:${drugNoticeExprM.get(drugT)}" th:remove="tag"
+		th:switch="${neT.tabName}" >
+			<span th:case="'notice'" th:text="${neT.mtlO.notice}"></span>
+			<span th:case="'expr'" th:text="${neT.mtlO}"></span>
+		</span>
+	</td></tr>
+	</div>
+</div>
+
+<div th:fragment="dayHtml">
+	<span th:text="${drugDayT.dayO.abs}">day </span>
+	<span th:if="${null==drugDayT.dayO}">###</span>
+</div>
+
+<div th:fragment="timesHtml">
+	<span th:if="${null!=drugDayTimesT}">
+		<span th:if="${''!=drugDayTimesT.timesO.abs}"
+			th:text="${drugDayTimesT.timesO.abs}"
+		>: times abs :</span>
+		<span th:if="${''==drugDayTimesT.timesO.abs}">: abs null :</span>
+	</span>
+</div>
+
+<div th:fragment="docName">
+	<span th:text="${docName}">docName</span>
+</div>
+
+	<!-- edu -->
+	<div class="container" style="padding-top: 50px;">
+		<div th:fragment="menuFragment">
+			<div class="page-header">
+				<h1 th:text="${title}"></h1>
+			</div>
+			<ul>
+				<li><a th:href="@{/users/all/jsp-plain.htm}">No template</a></li>
+				<li><a th:href="@{/users/all/jsp-custom-1.htm}">Custom tags</a></li>
+				<li><a th:href="@{/users/all/jsp-custom-2.htm}">Custom tags	with table tag</a></li>
+				<li><a th:href="@{/users/all/jsp-tiles.htm}">Apache Tiles</a></li>
+				<li><a th:href="@{/users/all/thymeleaf.htm}">Thymeleaf</a></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

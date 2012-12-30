@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:spring="http://www.springframework.org/tags">
+
+	<rg:folderName tag="h3" folderT="${folderT}" withImg="true"/>
+
+	<rg:patientLink patientT="${sessionPatientT }" tag="div"/>
+	<br/>
+
+		<rg:titlePane id="menu_1" mtitle="ui_menu" isOpened="${true}">
+		<!-- 
+			<a id="nf_1" href="newfolder">
+			new folder
+			</a>
+		 -->
+			<div>
+				<spring:message code="menu_newConcept" />
+			</div>
+			<a id="nf_2" href="new-folder?idFolder=${idFolder }">
+			new folder
+			</a>
+			
+	<script type="text/javascript">
+		link2modalDialog("nf_2");
+		/*
+		Spring.addDecoration(new Spring.AjaxEventDecoration({
+			elementId : "nf_1",
+			event : "onclick",
+//			popup : true,
+			params : {
+				fragments : "sidebar"
+				, mode : "embedded"
+			}
+		}));
+		*/
+	</script>
+		</rg:titlePane>
+		<div>
+			<spring:message code="ui_previousVersion"/>
+			<div>
+			<c:url var="lOws2" value="/../${link_ows2}/explorer=${idFolder }" />
+			<a href="${lOws2 }" target="_blank"> ows2 </a>
+			<br/>
+			<a href="${link_ows1}/tab?dir=${idFolder }" target="_blank"> ows1 </a>
+			</div>
+		</div>
+</jsp:root>

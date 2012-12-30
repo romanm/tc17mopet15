@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:joda="http://www.joda.org/joda/time/tags"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<rg:patientHead />
+	
+	<table>
+		<thead>
+			<tr >
+				<th colspan="2"><spring:message code="history_record" /></th>
+				<th><spring:message code="regime_times" /></th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:set var="dayOfMonth" value="111" />
+			<c:forEach var="historyT" items="${patientT.childTs }">
+			<c:if test="${not empty historyT.ofDateT}">
+				<spring:eval var="currentDayOfMonth" expression="historyT.ofDateT.history.mdateDT.dayOfMonth()"/>
+			</c:if>
+				<c:if test="${currentDayOfMonth!=dayOfMonth}">
+					<c:set var="dayOfMonth" value="${currentDayOfMonth}" />
+					<tr class="planday">
+						<td colspan="3" align="right">
+							<joda:format value="${historyT.ofDateT.history.mdateDT}" style="L-" />
+						</td>
+					</tr>
+				</c:if>
+				<c:choose>
+					<c:when test="${'protocol'==historyT.tabName }">
+						<tr class="conceptContent">
+							<td><spring:message code="history_concept" /></td>
+							<td><a href="${contextPath }/id=${historyT.id}">
+									${historyT.mtlO.protocol} </a></td>
+							<td>
+							<joda:format value="${historyT.ofDateT.history.mdateDT}" pattern="kk:mm" />
+							</td>
+						</tr>
+					</c:when>
+					<c:when test="${'task'==historyT.tabName }">
+						<rg:historyRegime historyT="${historyT }"/>
+					</c:when>
+					<c:otherwise>
+						<tr>
+							<c:choose>
+								<c:when test="${historyT.folder}">
+									<td colspan="2"><spring:message
+											code="ui_patient_transferred"
+											arguments="${historyT.mtlO.folder },${folderO.folder }" />
+									</td>
+								</c:when>
+								<c:when test="${historyT.diagnose}">
+									<td><spring:message code="history_diagnose" /></td>
+									<td>${historyT.mtlO.diagnose}</td>
+								</c:when>
+								<c:when test="${historyT.finding or historyT.labor }">
+									<td><rg:historyVariable historyT="${historyT }" /></td>
+									<td><rg:historyValue historyT="${historyT }" /></td>
+								</c:when>
+								<c:otherwise>
+									<td colspan="2">${historyT}</td>
+								</c:otherwise>
+							</c:choose>
+							<td>
+								<joda:format value="${historyT.ofDateT.history.mdateDT}" pattern="kk:mm" />
+							</td>
+						</tr>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+		</tbody>
+	</table>
+</jsp:root>

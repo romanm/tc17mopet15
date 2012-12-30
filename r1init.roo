@@ -1,0 +1,14 @@
+project --topLevelPackage org.tc17 --packaging POM 
+module create --moduleName core --topLevelPackage org.tc17.m15
+jpa setup --provider HIBERNATE --database POSTGRES
+jpa setup --provider HIBERNATE --database POSTGRES --password ows123 --databaseName test17 --userName ows_edit
+entity jpa --class ~.domain.Info1 --testAutomatically
+field string --fieldName infoName --sizeMin 1 --notNull
+module focus --moduleName ~
+module create --moduleName web --topLevelPackage org.tc17.m15.web
+web mvc setup
+web mvc all --package ~
+web mvc finder all
+web mvc language --code de
+web mvc language --code es
+web flow 

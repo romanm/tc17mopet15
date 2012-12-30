@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<jsp:directive.attribute name="locale" type="java.lang.String"
+		required="true" rtexprvalue="true"
+		description="The locale for the language to be added." />
+		<!-- 
+	<jsp:directive.attribute name="label" type="java.lang.String"
+		required="true" rtexprvalue="true"
+		description="The country label for the language to be added." />
+		 -->
+	<jsp:directive.attribute name="nolink" type="java.lang.Boolean"
+		required="false" rtexprvalue="false"
+		description="Indicate if the contents of this tag is link (default 'false')" />
+	<jsp:directive.attribute name="render" type="java.lang.Boolean"
+		required="false" rtexprvalue="true"
+		description="Indicate if the contents of this tag and all enclosed tags 
+		should be rendered (default 'true')" />
+
+	<c:if test="${empty render or render}">
+		<spring:url var="img" value="/resources/images/${locale}.png" />
+		<spring:url var="url" value="">
+			<spring:param name="lang" value="${locale}" />
+		</spring:url>
+		<!-- 
+		<spring:message code="global_language_switch" arguments="${label}"
+			var="lang_label" htmlEscape="false" />
+		<a href="${url}" title="${fn:escapeXml(lang_label)}"> <img
+		 -->
+		<c:choose>
+			<c:when test="${nolink }">
+		<img class="flag" src="${img}" alt="${locale}" title="${locale}"/>
+			</c:when>
+			<c:otherwise>
+		<div>
+			<a href="${url}" title="${locale}"> 
+				<img class="flag" src="${img}" alt="${locale}" />
+				<c:out value=" " />
+				<spring:message code="weSpeak_${locale}"/>
+			</a>
+		</div>
+			</c:otherwise>
+		</c:choose>
+		<c:out value=" " />
+	</c:if>
+
+</jsp:root>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:joda="http://www.joda.org/joda/time/tags"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<table>
+		<tr>
+			<th>drug</th>
+			<c:forEach var="dayNr" items="${dayNrDayTs }" varStatus="varStatus">
+				<th>${dayNr.key }</th>
+			</c:forEach>
+			<th><spring:message code="regime_app" /></th>
+			<th><spring:message code="regime_day" /></th>
+		</tr>
+		<c:forEach var="chemoDrugT" items="${regimeT.childTs }">
+			<c:if test="${chemoDrugT.drug }">
+				<tr>
+					<td>${chemoDrugT.mtlO.drug }</td>
+					<c:forEach var="dayNr" items="${dayNrDayTs }" varStatus="varStatus">
+						<td><c:if test="${not empty drugT_dayNr[chemoDrugT]}">
+								<spring:eval var="isDay"
+									expression="drugT_dayNr.get(chemoDrugT).contains(dayNr.key)" />
+								<c:if test="${isDay }">
+								###
+							</c:if>
+							</c:if></td>
+					</c:forEach>
+					<td>${chemoDrugT.drugDoseT.mtlO.app}</td>
+					<spring:eval var="drugDayT" expression="chemoDrugT.getDrugDayT(0)" />
+					<td><rg:dayText dayT="${drugDayT }" /></td>
+				</tr>
+			</c:if>
+		</c:forEach>
+	</table>
+
+	<table>
+		<c:forEach var="dayNr" items="${dayNrDayTs }" varStatus="varStatus">
+			<!-- 
+			<tr>
+				<th colspan="4">
+					<hr /> day: ${dayNr.key } <span class="small">dayNrDayTs </span>
+				</th>
+				<c:if test="${varStatus.first }">
+					<th class="small">#</th>
+				</c:if>
+			</tr>
+			<c:forEach var="dayT" items="${dayNr.value }">
+				<spring:eval var="drugDayTimesT"
+					expression="dayT.getDrugDayTimesT(0)" />
+				<rg:planTR timesT="${drugDayTimesT}" style="hhmm"/>
+			</c:forEach>
+		 -->
+			<tr>
+				<th colspan="3"><spring:eval var="iterator"
+						expression="dayNrTaskRuns.get(dayNr.key).iterator()" /> <spring:eval
+						var="hasNext" expression="iterator.hasNext()" /> <c:if
+						test="${hasNext}">
+						<spring:eval var="next" expression="iterator.next()" />
+						<joda:format value="${next.begin }" style="L-"
+							locale="${jodaLocale }" />
+						<joda:format value="${next.begin }" pattern=" EEE"
+							locale="${jodaLocale }" />
+					</c:if></th>
+			</tr>
+			<tr>
+				<td colspan="3"><c:set var="dayTaskRuns"
+						value="${dayNrTaskRuns[dayNr.key]}" /> <spring:eval
+						var="dayFirstTaskRun" expression="dayTaskRuns.first()"
+						scope="request" /> <spring:eval var="dayLastTaskRun"
+						expression="dayTaskRuns.last()" />
+					<table>
+						<tr>
+							<td>${dayFirstTaskRun.begin.hourOfDay } ..
+								${dayLastTaskRun.end.hourOfDay}</td>
+							<c:forEach var="h" begin="${dayFirstTaskRun.begin.hourOfDay }"
+								end="${dayLastTaskRun.end.hourOfDay}">
+								<td>${h }</td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td></td>
+							<c:forEach var="h" begin="${dayFirstTaskRun.begin.hourOfDay }"
+								end="${dayLastTaskRun.end.hourOfDay}">
+								<td><c:forEach var="hourTaskRun"
+										items="${daysHoursTaskRuns[dayNr.key][h]}">
+										<rg:timesNr timesT="${hourTaskRun.timesT}" />
+									</c:forEach></td>
+							</c:forEach>
+						</tr>
+						<tr>
+							<td>x</td>
+							<c:forEach var="h" begin="${dayFirstTaskRun.begin.hourOfDay }"
+								end="${dayLastTaskRun.end.hourOfDay}">
+								<td><c:forEach var="hourTaskRun"
+										items="${daysHoursTaskRuns[dayNr.key][h]}">
+										<div>
+											<c:forEach begin="1"
+												end="${hourTaskRun.begin.minuteOfHour/15 }">
+												<c:out value="." />
+											</c:forEach>
+											<rg:appText
+												appT="${hourTaskRun.timesT.parentT.parentT.drugAppT}"
+												style="dotted" />
+										</div>
+									</c:forEach></td>
+							</c:forEach>
+						</tr>
+					</table></td>
+			</tr>
+			<c:forEach var="taskRun" items="${dayNrTaskRuns[dayNr.key] }">
+				<rg:planTR timesT="${taskRun.timesT}" taskRun="${taskRun }"
+					style="hhmm skew" />
+			</c:forEach>
+		</c:forEach>
+	</table>
+
+</jsp:root>

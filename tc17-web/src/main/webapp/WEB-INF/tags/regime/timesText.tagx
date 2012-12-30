@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:joda="http://www.joda.org/joda/time/tags"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<jsp:directive.attribute name="timesT"
+		type="org.tasclin1.mopet.domain.Tree" required="true"
+		description="The tree object" />
+
+	<jsp:directive.attribute name="taskRun"
+		type="org.tasclin1.mopet.domain.TaskRun" required="false"
+		description="The TaskRun object" />
+
+	<jsp:directive.attribute name="style" type="java.lang.String"
+		required="false"
+		description="Indication style plushhmm|hhmm lg|skew dotted|numbered" />
+
+	<c:if test="${empty style }">
+		<!-- 
+		<c:set var="style" value="x x" />
+		<c:set var="style" value="skew dotted" />
+		<c:set var="style" value="plushhmm" />
+		 -->
+		<c:set var="style" value="skew numbered" />
+	</c:if>
+	<c:set var="leerTimes" value=".&#160;&#160;:&#160;&#160;."
+		scope="application" />
+	<c:choose>
+			<c:when test="${not empty taskRun and fn:contains(style,'plushhmm') }">
+				<c:set var="dayFirstMillis" value="${timesBeginMills[taskRun.timesT] }"/>
+				<c:set var="relativeTimesInSec" value="${dayFirstMillis+firstRelativeSec}"/>
+				<rg:relativeTimesInMillis relativeTimesInSec="${relativeTimesInSec}" />
+				+<joda:format
+						value="${currentRelativeTimes}" pattern="HH:mm" />
+			</c:when>
+			<c:otherwise>
+	<c:choose>
+		<c:when  test="${not empty taskRun and fn:contains(style,'hhmm') }">
+			<joda:format var="timesText" value="${taskRun.begin }" pattern="kk:mm" />
+		</c:when>
+		<c:otherwise>
+			<c:set var="timesText" value="${leerTimes }" />
+		</c:otherwise>
+	</c:choose>
+		<c:choose>
+			<c:when test="${not empty timesT.ref}">
+				<c:set var="timesT_Nr"><rg:timesNr timesT="${timesT}" /></c:set>
+				<c:set var="refTimesT_Nr"><rg:timesNr timesT="${treeFromId[timesT.ref]}" /></c:set>
+				<c:set var="interval">
+					<c:if test="${timesT.timesO.relvalue>0}">
+						<c:choose>
+							<c:when test="${fn:contains(style,'dotted') }">
+								<rg:dottedDuration value="${timesT.timesO.relvalue}"
+									unit="${timesT.timesO.relunit}" />
+							</c:when>
+							<c:otherwise>
+								<c:out value="${timesT.timesO.relvalue}${timesT.timesO.relunit}" />
+							</c:otherwise>
+						</c:choose>
+					</c:if>
+				</c:set>
+				<c:choose>
+					<c:when test="${fn:contains(style,'skew')}">
+				<!--
+				0 -↘↑- beginAfterEnd
+				1 -↑↖- beginBeforeBegin
+				2 -↘↓- endAfterEnd
+				3 -↓↖- endBeforeBegin
+				-->
+						<c:set var="apporder"
+							value="${
+						timesT.timesO.apporder==0?'↘↑'
+						:timesT.timesO.apporder==1?'↑↖'
+						:timesT.timesO.apporder==2?'↘↓'
+						:timesT.timesO.apporder==3?'↓↖'
+						:'*' }" />
+						<c:choose>
+							<c:when
+								test="${timesT.timesO.apporder==1 or timesT.timesO.apporder==3}">
+								<c:set var="timesTextRelation"
+									value="|${timesT_Nr
+				}${fn:substring(apporder,0,1)}${interval
+				}${fn:substring(apporder,1,2)}${refTimesT_Nr }" />
+							</c:when>
+							<c:otherwise>
+								<c:set var="timesTextRelation"
+									value="|${refTimesT_Nr
+				}${fn:substring(apporder,0,1)}${interval
+				}${fn:substring(apporder,1,2)}${timesT_Nr }" />
+							</c:otherwise>
+						</c:choose>
+					</c:when>
+					<c:otherwise>
+						<c:set var="apporder"
+							value="${
+						timesT.timesO.apporder==0?'&gt;'
+						:timesT.timesO.apporder==1?'&lt;'
+						:'*' }" />
+						<c:set var="timesTextRelation"
+							value="(.${refTimesT_Nr}${apporder}|${interval}|${timesT_Nr })" />
+					</c:otherwise>
+				</c:choose>
+			</c:when>
+			<c:when test="${not empty timesT.timesO.abs}">
+				<c:choose>
+					<c:when test="${fn:contains(timesT.timesO.abs,'=')}">
+					</c:when>
+				</c:choose>
+			<c:set var="timesText" value="${timesT.timesO.abs}" />
+		</c:when>
+	</c:choose>
+<c:out value="${timesText }" />
+<span class="small">
+<c:out value="${timesTextRelation }" />
+</span>
+		</c:otherwise>
+	</c:choose>
+
+</jsp:root>

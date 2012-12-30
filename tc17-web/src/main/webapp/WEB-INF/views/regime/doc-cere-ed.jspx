@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:joda="http://www.joda.org/joda/time/tags"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<table id="ctxTable">
+		<thead>
+			<tr>
+				<th id="regime_${regimeT.id }" class="task select">
+					<spring:message code="regime_tumortherapy" /></th>
+				<th><spring:message code="regime_dose" /></th>
+				<th><spring:message code="regime_app" /></th>
+				<th><spring:message code="regime_day" /></th>
+				<th><spring:message code="regime_times" /></th>
+				<th>#</th>
+			</tr>
+		</thead>
+		<tbody>
+			<rg:edTaskDrugsTRs taskT="${regimeT }" />
+			<c:forEach var="taskTaskT" items="${regimeT.childTs }">
+				<c:if test="${'task'==taskTaskT.tabName }">
+					<tr>
+						<th colspan="2" id="task_${taskTaskT.id }" class="task select">
+							<c:choose>
+								<c:when test="${'support'==taskTaskT.mtlO.task }">
+									<spring:message code="ui_taskBlock_support"/>
+								</c:when>
+								<c:otherwise>
+								${taskTaskT.mtlO.task }
+								</c:otherwise>
+							</c:choose>
+						</th>
+					</tr>
+					<rg:edTaskDrugsTRs taskT="${taskTaskT }" />
+				</c:if>
+			</c:forEach>
+			<tr>
+				<td><a id="startFlow" class="toMoDi"
+					href="cere-ed?idRegime=${idRegime}&amp;a=new_drug">+new drug</a></td>
+			</tr>
+
+		<rg:edTaskBlockTR blockName="labor"/>
+		<rg:edTaskBlockTR blockName="finding"/>
+		<rg:edTaskBlockTR blockName="notice"/>
+
+		</tbody>
+	</table>
+
+	<script type="text/javascript">
+		dojo.query(".toMoDi").forEach(function(e) {
+			link2modalDialog(e.id);
+		});
+	</script>
+
+<!-- debug -->
+	
+	<c:set var="now"  value="${now}" scope="request"/>
+
+</jsp:root>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:joda="http://www.joda.org/joda/time/tags"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<jsp:directive.attribute name="historyT"
+		type="org.tasclin1.mopet.domain.Tree" required="true"
+		description="Current folder object" />
+
+	<tr class="regimeContent">
+		<td><spring:message code="history_regime" /></td>
+		<td><a href="${contextPath }/id=${historyT.ref}">
+				${historyT.mtlO.task } </a></td>
+		<td>
+		<joda:format value="${historyT.ofDateT.history.mdateDT}" pattern="kk:mm" />
+		</td>
+	</tr>
+
+	<tr class="regimeContent">
+		<td colspan="2"><c:forEach var="modificationT"
+				items="${historyT.childTs }">
+				<c:choose>
+					<c:when
+						test="${modificationT.ivariable and 'delayedDay'==modificationT.mtlO.ivariable}">
+						<div>
+							<c:forEach var="t2T" items="${modificationT.childTs }">
+								<c:choose>
+									<c:when test="${t2T.notice}">
+										<c:set var="dayDelayNoticeT" value="${t2T }" />
+									</c:when>
+									<c:when test="${t2T.ivariable}">
+										<c:set var="dayDelayT" value="${t2T }" />
+									</c:when>
+								</c:choose>
+							</c:forEach>
+							<spring:message code="history_dayPostponed"
+								arguments="${modificationT.mtlO.ivalue }
+											,${dayDelayT.mtlO.ivalue }
+											,${dayDelayNoticeT.mtlO.notice }
+											" />
+						</div>
+					</c:when>
+					<c:when
+						test="${modificationT.notice and 'therapyChange'==modificationT.mtlO.type}">
+						<div>
+							<c:forEach var="mod2T" items="${modificationT.childTs }">
+								<c:choose>
+									<c:when
+										test="${mod2T.ivariable and 'procent'==mod2T.mtlO.ivariable}">
+										<span class="select"> ${mod2T.refT.parentT.mtlO.drug}
+											${mod2T.refT.mtlO.value} ${mod2T.refT.mtlO.unit}
+											${mod2T.refT.mtlO.app} <c:forEach var="mod3T"
+												items="${mod2T.childTs }">
+												<c:if
+													test="${mod3T.ivariable and 'taskTsNr'==mod3T.mtlO.ivariable}">
+													<c:out value="Appl.:${mod3T.mtlO.ivalue}" />
+												</c:if>
+												<b> <c:out value="(${mod2T.mtlO.ivalue }%)" /></b>
+											</c:forEach>
+										</span>
+									</c:when>
+								</c:choose>
+							</c:forEach>
+						</div>
+					</c:when>
+					<c:when test="${modificationT.notice}">
+						${modificationT.id }
+						<c:if test="${empty modifocationT.mtlO }">
+							<span class="select"> toDelete </span>
+						</c:if>
+					</c:when>
+				</c:choose>
+			</c:forEach></td>
+	</tr>
+
+</jsp:root>

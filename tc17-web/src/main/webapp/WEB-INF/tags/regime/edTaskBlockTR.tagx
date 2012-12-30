@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<jsp:directive.attribute name="blockName" type="java.lang.String"
+		required="true" description="labor|finding|notice" />
+
+	<c:set var="firstLabor" value="true" />
+	<c:forEach var="taskLaborT" items="${regimeT.childTs }">
+		<c:if test="${blockName==taskLaborT.tabName }">
+			<c:if test="${firstLabor }">
+				<tr>
+					<th colspan="2" id="task.${blockName }_${regimeT.id }"
+						class="task select"><spring:message
+							code="ui_taskBlock_${blockName }" /></th>
+					<c:set var="firstLabor" value="false" />
+				</tr>
+			</c:if>
+			<rg:edLaborTR taskDrugT="${taskLaborT }" />
+		</c:if>
+	</c:forEach>
+
+</jsp:root>

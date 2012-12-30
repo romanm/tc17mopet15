@@ -1,0 +1,118 @@
+/* from mopet 
+body {font-family: 'Arial','Helvetica',sans-serif;}
+body {font: 80%/1.4em Verdana,Arial,Tahoma,"Trebuchet MS",sans-serif}
+body {font:100% verdana,arial,sans-serif}
+ 0 2px 8px #CCCCCC
+;}
+body {font:90% "Lucida Grande","Lucida Sans Unicode","Lucida",verdana,sans-serif}
+ */
+body {font-family:"Gill Sans MT","Gill Sans",GillSans,Verdana,sans-serif}
+.small{font-size: 0.8em}
+.floatLeft {float: left;}
+.floatRight {float: right}
+.clearBoth {clear:both;}
+
+div.scroll
+{height: 400px; overflow: scroll;
+}
+
+tr.planday th, tr.planday td {
+    border-top: 3px double;
+}
+tr.planday th,
+tr.planday td,
+table caption
+{border-top: 3px double
+}
+.nofloat{clear:both}
+.nowrap {white-space:nowrap;}
+.bold{font-weight:bold;}
+
+div#titleInline h5,
+div#titleInline h3
+	{display: inline;}
+#headline, #sidebar { position:fixed; top: 0.1em; border: 1px solid #CCCCCC;
+	padding-bottom: 4px;
+}
+#headline{ width:79%; left:0.1em; background-color:#F1F1E7; box-shadow:0 2px 8px #CCCCCC;
+}
+#sidebar { width: 20%; bottom: 0.1em; right: 0.1em;
+	background: url("../images/bg_dotted.png") repeat;
+}
+#sidebar ul{
+	padding-left: 18px;
+}
+#content div.home{
+	margin:auto;
+}
+/*
+background: url("../images/home-bkg.gif") repeat;
+background: url("../images/home-bkg.gif") repeat-x;
+background: url("../images/home-bkg.gif") repeat-x scroll 8px 0 #FFFFFF
+*/
+#content{width:79%; margin-top: 3em;}
+
+#menu_1_pane div:hover {background: #F1F1E7 } 
+#menu_2_pane div:hover {background: #F1FFEE } 
+.select:hover {background: #DDDDBB } 
+.selected {border: 1px dotted blue }
+
+/*
+#headline, #sidebar { position:fixed; top: 0.1em; border: 1px solid #CCCCCC; }
+#headline{ width:79%; left:0.1em; background-color:#D6E4E1;}
+.conceptContent	{background-color: #F0F0FF;}
+.regimeContent	{background-color: #F0F0CC}
+http://www.colorcombos.com/color-schemes/130/ColorCombo130.html
+    A31E39 485C5A 8C9C9A 9DB2B1 BFCFCC D6E4E1
+http://www.colorcombos.com/color-schemes/177/ColorCombo177.html
+    C6C78C E7C39C E7DF9C DEE79C EFEBD6
+http://www.colorcombos.com/color-schemes/173/ColorCombo173.html
+    206BA4 BBD9EE EBF4FA C0C0C0 E7E4D3 F1EFE2
+http://colorschemedesigner.com/
+*/
+/* color palette */
+.regimeContent	{background-color: #D9E3D9}
+.conceptContent	{background-color: #C1D6CC;}
+.patientContent	{background-color: #E3E3CF}
+.newstitle{
+//	background: url("../images/lines.gif") repeat scroll 0 0 transparent;
+	border-style: solid none;
+	border-width: 1px;
+}
+/* from blueprint 
+.error, .noticeCss, .success {padding:.8em;margin-bottom:1em;border:2px solid #ddd;}
+*/
+.error, .noticeCss, .success {border:2px solid #ddd;}
+.error {background:#FBE3E4;color:#8a1f11;border-color:#FBC2C4;}
+.noticeCss {background:#FFF6BF;color:#514721;border-color:#FFD324;}
+.success {background:#E6EFC2;color:#264409;border-color:#C6D880;}
+.error a {color:#8a1f11;}
+.noticeCss a {color:#514721;}
+.success a {color:#264409;}
+/*
+	border-bottom: 1px dotted #AAAAAA;
+	color: #FC3; border-bottom: 1px dotted;
+*/
+a {border-bottom: 1px dotted; text-decoration: none;}
+a:hover {border-bottom: 1px solid;}
+/* buttons 
+a.button, button {display:block;margin:0.7em 0.5em 0.7em 0;padding:5px 10px 5px 7px;border:1px solid #dedede;border-top:1px solid #eee;border-left:1px solid #eee;background-color:#f5f5f5;font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;font-size:100%;line-height:130%;text-decoration:none;font-weight:bold;color:#565656;cursor:pointer;}
+*/
+a.button, button {display:block;float:left;margin:0.7em 0.5em 0.7em 0;padding:5px 10px 5px 7px;border:1px solid #dedede;border-top:1px solid #eee;border-left:1px solid #eee;background-color:#f5f5f5;font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;font-size:100%;line-height:130%;text-decoration:none;font-weight:bold;color:#565656;cursor:pointer;}
+a.button:active {background-color:#6299c5;border:1px solid #6299c5;color:#fff;}
+a.positive:hover, button.positive:hover {background-color:#E6EFC2;border:1px solid #C6D880;color:#529214;}
+a.positive:active {background-color:#529214;border:1px solid #529214;color:#fff;}
+a.negative:hover, button.negative:hover {background-color:#fbe3e4;border:1px solid #fbc2c4;color:#d12f19;}
+a.negative:active {background-color:#d12f19;border:1px solid #d12f19;color:#fff;}
+button {width:auto;overflow:visible;padding:4px 10px 3px 7px;}
+button[disabled=disabled],
+button[disabled=disabled]:hover
+{
+	background-color: #D9E3D9;
+}
+button[type] {padding:4px 10px 4px 7px;line-height:17px;}
+*:first-child+html button[type] {padding:4px 10px 3px 7px;}
+button img, a.button img {margin:0 3px -3px 0 !important;padding:0;border:none;width:16px;height:16px;float:none;}
+button:hover, a.button:hover {background-color:#dff4ff;border:1px solid #c2e1ef;color:#336699;}
+body .positive {color:#529214;}
+body .negative {color:#d12f19;}

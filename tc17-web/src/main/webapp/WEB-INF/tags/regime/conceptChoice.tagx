@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<jsp:directive.attribute name="choiceT"
+		type="org.tasclin1.mopet.domain.Tree" required="true" />
+
+	<fieldset>
+		<legend class="choice select" id="c_${choiceT.id}">
+			<spring:message code="conceptChoice" />
+		</legend>
+		<c:forEach var="isChoicePvT" items="${choiceT.childTs }">
+			<c:if test="${not empty isChoicePvT.ref}">
+				<c:set var="isChoiceT" value="${isChoicePvT}" />
+			</c:if>
+		</c:forEach>
+		<c:forEach var="armT" items="${choiceT.childTs}">
+			<c:if test="${armT.arm }">
+			<c:set var="isChoice" value="${isChoiceT.ref==armT.id }" />
+			<div style="float: left;" class="arm select ${isChoice?'noticeCss':''}" id="armsel_${armT.id }">
+				<rg:titlePane id="arm_${armT.id }" title="arm_${armT.mtlO.arm }"
+				isOpened="${isChoice or empty patientT}"
+				>
+					<c:choose>
+						<c:when test="${empty armT.childTs}">
+							<div id="a_${armT.id}" class="select">..</div>
+						</c:when>
+						<c:otherwise>
+							<rg:conceptBlock blockT="${armT }"/>
+						</c:otherwise>
+					</c:choose>
+				</rg:titlePane>
+			</div>
+			</c:if>
+		</c:forEach>
+	</fieldset>
+
+</jsp:root>

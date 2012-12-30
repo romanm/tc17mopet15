@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+	"-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+	"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+	
+<tiles-definitions>
+	
+	<!-- 
+	<definition name="s=*/cere/*" extends="standardLayout">
+		<put-attribute name="body" value="/WEB-INF/flows/cere-ed/{2}.jspx" />
+	</definition>
+	
+	<definition name="home" extends="tcmopet15_layout">
+		<put-attribute name="title" value="/WEB-INF/flows/title.jspx" />
+		<put-attribute name="tilesUrl" value="homeSite" />
+		<put-attribute name="head" value="" />
+		<put-attribute name="body" value="/WEB-INF/home.jspx" />
+		<put-attribute name="sidebar" value="/WEB-INF/flows/home-sidebar.jspx" />
+	</definition>
+	
+	<definition name="cere/*" extends="standardLayout">
+		<put-attribute name="body" value="/WEB-INF/flows/cere-ed/{1}.jspx" />
+	</definition>
+	 -->
+<!-- 
+	<definition name="cere/*" extends="tcmopet15_layout">
+ -->	
+	<definition name="cere/*" extends="tcmopet16_layout">
+		<put-attribute name="body" value="/WEB-INF/flows/cere-ed/{1}.jspx" />
+		<put-attribute name="sidebar" value="/WEB-INF/flows/cere-ed/sidebar.jspx" />
+		<put-attribute name="title" value="" />
+		<put-attribute name="tilesUrl" value="" />
+		<put-attribute name="head" value="" />
+	</definition>
+
+</tiles-definitions>

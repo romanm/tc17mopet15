@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<jsp:directive.attribute name="tree"
+		type="org.tasclin1.mopet.domain.Tree" required="true"
+		description="The tree object" />
+	<jsp:directive.attribute name="name" type="java.lang.String"
+		required="true" description="The html tag name" />
+	<jsp:directive.attribute name="idprefix" type="java.lang.String"
+		required="false" description="The html tag name" />
+	<jsp:directive.attribute name="colspan" type="java.lang.Integer"
+		required="false" description="The html tag name" />
+
+<c:set var="tagId" value="${idprefix}${not empty idprefix?'.':''
+}${tree.tabName }_${tree.id}" />
+ <c:set var="body">
+		<a id="a${tagId }" class="toMoDi"
+			onclick="dojo.addClass(this, 'noticeCss');"
+			href="${contextPath}/cere-ed?idRegime=${idRegime}&amp;idt=${tree.id 
+			}&amp;a=ed_${tree.tabName }">
+				<jsp:doBody />
+		</a>
+ </c:set>
+<c:choose>
+	<c:when test="${'td'==name and not empty colspan  }">
+
+<jsp:element name="${name}">
+	<jsp:attribute name="colspan">${colspan}</jsp:attribute>
+	<jsp:attribute name="class">select ${tree.tabName }</jsp:attribute>
+	<jsp:attribute name="id">${tagId }</jsp:attribute>
+ ${body }
+</jsp:element>
+	</c:when>
+	<c:otherwise>
+<jsp:element name="${name}">
+	<jsp:attribute name="class">select ${tree.tabName }</jsp:attribute>
+	<jsp:attribute name="id">${tagId }</jsp:attribute>
+ ${body }
+</jsp:element>
+	</c:otherwise>
+</c:choose>
+
+</jsp:root>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" 
+xmlns:form="urn:jsptagdir:/WEB-INF/tags/form"
+ xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+   <form:update id="fu_org_tc17_m15_domain_Info1" modelAttribute="info1" path="/info1s" versionField="Version" z="6KXPDnj15mxPWecf6Ujds/CQU9A=">
+        <field:input field="infoName" id="c_org_tc17_m15_domain_Info1_infoName" min="1" required="true" z="HhuTu5ISaK8eEqrSNZ7+guCalpQ="/>
+    </form:update>
+</div>

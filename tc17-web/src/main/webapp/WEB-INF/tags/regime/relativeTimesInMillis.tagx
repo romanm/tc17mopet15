@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:spring="http://www.springframework.org/tags">
+
+	<jsp:directive.attribute name="relativeTimesInSec" 
+	type="java.lang.Integer"
+		required="true" description="relativeTimesInSec " />
+
+	<c:set var="relativeTimesInMillis"
+		value="${(relativeTimesInSec+5+dayLossCorrectur)*1000}" />
+		<!-- 
+		${relativeTimesInMillis}
+		...
+		${relativeTimesInSec}
+	<c:if test="${relativeTimesInMillis>86399999}">
+		<c:set var="relativeTimesInMillis" value="86399990" />
+	</c:if>
+		 -->
+	<spring:eval var="currentRelativeTimes"
+		expression="now.plusMillis(relativeTimesInMillis)" 
+		scope="request"
+		/>
+
+		<c:if test="${firstInDay }">
+			<c:if test="${currentRelativeTimes.dayOfMonth != now.dayOfMonth}">
+				<spring:eval var="period" 
+				expression="new org.joda.time.Period(currentRelativeTimes, now)"/>
+				<!-- 
+				${period.hours }h${period.minutes }m${period.seconds }s
+				 -->
+				<c:set var="dayLossCorrectur" value="${((period.hours*60)+period.minutes)*60+period.seconds }"
+		scope="request"/>
+	<spring:eval var="currentRelativeTimes"
+		expression="currentRelativeTimes.plusMillis(dayLossCorrectur*1000)" 
+		scope="request"/>
+			</c:if>
+		</c:if>
+
+		<!-- 
+					TODO
+					org.joda.time.IllegalFieldValueException: 
+					Value 86405000 for millisOfDay must be in the range [0,86399999]
+					 -->
+
+</jsp:root>

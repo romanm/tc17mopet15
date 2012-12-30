@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:joda="http://www.joda.org/joda/time/tags"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<jsp:directive.attribute name="viewType" type="java.lang.String"
+		required="false" description="Indication style head|drugDrug" />
+
+	<jsp:directive.attribute name="taskRun"
+		type="org.tasclin1.mopet.domain.TaskRun" required="false"
+		description="The tree object" />
+
+	<!-- 
+	<c:set var="mclass" value="x" />
+		 -->
+	<c:set var="mclass" value="interval" />
+	<c:choose>
+		<c:when test="${'head'==viewType}">
+			<c:forEach var="h" begin="${dayFirstTaskRun.begin.hourOfDay }"
+				end="${dayLastTaskRun.end.hourOfDay}">
+				<td>${h }</td>
+			</c:forEach>
+		</c:when>
+		<c:when test="${'drugDrug'==viewType}">
+			<c:forEach begin="${dayFirstTaskRun.begin.hourOfDay }"
+				end="${dayLastTaskRun.end.hourOfDay}">
+				<td>.</td>
+			</c:forEach>
+		</c:when>
+		<c:otherwise>
+			<c:forEach var="h" begin="${dayFirstTaskRun.begin.hourOfDay }"
+				end="${dayLastTaskRun.end.hourOfDay}">
+				<td><c:choose>
+						<c:when test="${'interval'==mclass }">
+							<spring:eval expression="taskRun.symbolToHour(h)" />
+						</c:when>
+						<c:otherwise>
+							<c:set var="x" value="" />
+							<c:forEach var="hourTaskRun"
+								items="${daysHoursTaskRuns[taskRun.defDay][h]}">
+								<c:if test="${hourTaskRun.timesT==taskRun.timesT}">
+									<c:set var="x" value="x" />
+								</c:if>
+							</c:forEach>
+							<c:out value="${x }${''==x?'.':'' }" />
+						</c:otherwise>
+					</c:choose></td>
+			</c:forEach>
+		</c:otherwise>
+	</c:choose>
+</jsp:root>

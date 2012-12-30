@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:joda="http://www.joda.org/joda/time/tags"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<jsp:directive.attribute name="timesT"
+		type="org.tasclin1.mopet.domain.Tree" required="true"
+		description="The tree object" />
+
+			<spring:eval var="nr" expression="regimeTimesTs.indexOf(timesT)+1" />
+			<c:choose>
+				<c:when test="${10>nr }">
+					<c:out value="${nr}" />
+				</c:when>
+				<c:otherwise>
+					<spring:eval expression="timesT.getCharNr(nr)" />
+				</c:otherwise>
+			</c:choose>
+
+</jsp:root>

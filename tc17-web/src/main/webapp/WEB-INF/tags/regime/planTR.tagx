@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:joda="http://www.joda.org/joda/time/tags"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<jsp:directive.attribute name="timesT"
+		type="org.tasclin1.mopet.domain.Tree" required="true"
+		description="The tree object" />
+
+	<jsp:directive.attribute name="taskRun"
+		type="org.tasclin1.mopet.domain.TaskRun" required="false"
+		description="The TaskRun object" />
+
+	<jsp:directive.attribute name="style" type="java.lang.String"
+		required="false"
+		description="Indication style hhmm lg|skew dotted|numbered" />
+
+	<c:set var="dayT" value="${timesT.parentT }" />
+	<tr>
+		<td><rg:timesText timesT="${timesT}" taskRun="${taskRun }" style="${style }" /></td>
+		<td>${dayT.parentT.drugO.drug }</td>
+		<td>
+			<c:set var="drugDoseT" value="${dayT.parentT.drugDoseT}" />
+			<rg:doseText doseT="${drugDoseT }" /> ${drugDoseT.mtlO.app} <rg:appText
+				appT="${dayT.parentT.drugAppT}" />
+		</td>
+		<td>
+		<rg:appText appT="${dayT.parentT.drugAppT}" style="dotted" />
+		</td>
+		<td>
+			<rg:timesNr timesT="${timesT}"/>
+		</td>
+	</tr>
+
+</jsp:root>

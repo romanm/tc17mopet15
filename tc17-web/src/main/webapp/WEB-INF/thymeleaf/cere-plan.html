@@ -1,0 +1,45 @@
+<html>
+<body>
+
+<div th:fragment="doseHtml" th:switch="${doseFormat}">
+<div th:switch="${doseFormat}" th:remove="tag">
+	<span th:case="'doseUnit'" th:text="${doseT.doseO.value+' '+doseT.doseO.unit}"/>
+	<span th:case="'doseUnitApp'" 
+		th:text="${doseT.doseO.value+' '+doseT.doseO.unit+' '+doseT.doseO.app}"/>
+	<span th:case="*" th:text="${'doseFormat='+doseFormat}"/>
+</div>
+</div>
+
+<div th:fragment="cerePlanTable">
+<table th:each="dayNr : ${dayNrDayTs }"
+	th:with="pl=${T(org.tasclin1.mopet.service.Plancolumns)},doseFormat='doseUnitApp'"
+>
+	<tr><div th:each="plancolumn : ${planChronoFormat.plancolumns}" th:remove="tag"
+			th:switch="${plancolumn}" 
+		>
+			<td th:case="${pl.times}" th:text="${plancolumn}" />
+			<td th:case="${pl.drug}" th:text="${plancolumn}" />
+			<td th:case="*" th:text="${plancolumn}" />
+		</div>
+	</tr>
+	<tr th:each="taskRun:${dayNrTaskRuns[dayNr.key] }" 
+	th:with="
+	drugT=${taskRun.timesT.parentT.parentT},
+	doseT=${taskRun.timesT.parentT.parentT.drugDoseT}
+	"
+	>
+		<div th:each="plancolumn : ${planChronoFormat.plancolumns}" th:remove="tag"
+			th:switch="${plancolumn}">
+			<td th:case="${pl.drug}" th:text="${drugT.drugO.drug}" />
+			<td th:case="${pl.dose}"
+				th:include="thymeleaf/cere-plan :: doseHtml "
+			 />
+			<td th:case="*"> a1
+			</td>
+		</div>
+	</tr>
+	
+</table>
+</div>
+</body>
+</html>

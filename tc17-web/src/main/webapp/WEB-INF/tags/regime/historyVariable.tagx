@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<jsp:directive.attribute name="historyT"
+		type="org.tasclin1.mopet.domain.Tree" required="true"
+		description="Current folder object" />
+
+	<c:choose>
+		<c:when
+			test="${
+			historyT.finding
+			and
+			(
+			'weight'==historyT.mtlO.finding
+			or 'height'==historyT.mtlO.finding
+			)
+			}">
+			<spring:message code="${historyT.tabName }_${historyT.mtlO.finding }" />
+		</c:when>
+		<c:when test="${ historyT.finding}"> ${historyT.mtlO.finding } </c:when>
+		<c:when test="${ historyT.labor}"> ${historyT.mtlO.labor } </c:when>
+		<c:otherwise> ${historyT.mtlO} </c:otherwise>
+	</c:choose>
+</jsp:root>

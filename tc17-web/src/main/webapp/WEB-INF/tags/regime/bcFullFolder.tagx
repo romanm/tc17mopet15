@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime">
+	<jsp:directive.attribute name="currentFolderT"
+		type="org.tasclin1.mopet.domain.Tree" required="true"
+		description="Current folder object" />
+
+	<c:if test="${'folder'!=currentFolderT.mtlO.parentF.folder}">
+		<rg:bcFullFolder currentFolderT="${currentFolderT.parentT}" />
+	</c:if>
+	<rg:bcA_Folder currentFolderT="${currentFolderT}"/>
+</jsp:root>

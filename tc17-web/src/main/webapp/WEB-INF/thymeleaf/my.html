@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="thymeleaf/tc17layout :: headerFragment">
+</head>
+
+<body class="tundra spring">
+	<div id="headline">rg:headline</div>
+	<div id="content">
+		<h1 class="regimeContent newstitle"
+			th:include="thymeleaf/tc17layout :: docName "
+			th:with="docName=${regimeT.taskO.task }" />
+
+<div th:if="${'plan'==regimeView}"
+	th:include="thymeleaf/cere-plan :: cerePlanTable "
+	th:remove="tag"
+>plan</div>
+<div th:if="${'ed'==regimeView}"
+	th:include="thymeleaf/tc17layout :: cereEdTable "
+	th:remove="tag"
+>ed</div>
+
+	</div>
+
+	<div id="sidebar">
+		<div id="titleInline">titleInline</div>
+		sidebar
+		<h3 class="regimeContent newstitle small"
+			th:include="thymeleaf/tc17layout :: docName "
+			th:with="docName=${regimeT.taskO.task }" />
+		
+	<div id="view_1" title="View" >
+		<ul>
+			<li> <a th:href="@{'/cere-ed='+${regimeT.id}+'.htm'}"
+				th:text="#{uiTherapySchema}"
+			>ed</a> </li>
+			<li> <a th:href="@{'/cere-plan='+${regimeT.id}+'.htm'}"
+				th:text="#{uiChemoTherapyPlan}"
+			>plan</a> 
+				<ul th:if="${'plan'==regimeView}">
+					<li th:text="#{uiChemoTherapyPlan_infoCheck}" />
+					<li th:text="#{uiChemoTherapyPlan_drugNoteCheck}" />
+				</ul>
+			</li>
+			<li> <a th:href="@{'/cere-week='+${regimeT.id}+'.htm'}"
+				th:text="#{uiChemoTherapyWeek}"
+			>week</a> </li>
+		</ul>
+		<script type="text/javascript">titlePane("view_1",true)</script>
+	</div>
+	</div>
+	
+	<div>
+		<h4>defeloper</h4>
+		<ul>
+		<li> <a th:href="@{/layout/all/thymeleaf.htm}">layout Thymeleaf</a> </li>
+		<li> <a th:href="@{/layout/all/tc17layout.htm}">tc17layout Thymeleaf</a> </li>
+		</ul>
+	</div>
+</body>
+</html>

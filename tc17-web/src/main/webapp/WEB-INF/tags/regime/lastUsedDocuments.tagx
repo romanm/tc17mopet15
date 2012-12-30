@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<jsp:directive.attribute name="cssClass" type="java.lang.String"
+		required="false" description="css Class " />
+
+<div class="${cssClass }">
+	<c:forEach var="lastId" items="${lastUsedDocumentsList }">
+		<c:set var="docT" value="${lastUsedDocuments[lastId] }" />
+		<c:choose>
+			<c:when test="${docT.patient}">
+				<rg:patientLink patientT="${docT }" tag="div" />
+			</c:when>
+			<c:when test="${docT.concept}">
+				<rg:conceptName tag="div" conceptT="${docT }" withImg="true"
+					withLink="true" />
+			</c:when>
+			<c:when test="${docT.task }">
+				<rg:regimeName taskT="${docT }" tag="div" withImg="true"
+					withLink="true" />
+			</c:when>
+			<c:otherwise>
+				<div>${docT }</div>
+			</c:otherwise>
+		</c:choose>
+	</c:forEach>
+</div>
+
+</jsp:root>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime">
+
+	<!-- back button -->
+	<c:choose>
+		<c:when test="${not empty docId}">
+			<c:choose>
+				<c:when test="${docId==regimeT.id}">
+					<c:url var="previousDocUrl" value="/id=${conceptT.id }" />
+				</c:when>
+				<c:when test="${docId==conceptT.id and empty patientT}">
+					<c:url var="previousDocUrl" value="/id=${folderO.id }" />
+				</c:when>
+				<c:when test="${docId==conceptT.id and not empty patientT}">
+					<c:url var="previousDocUrl" value="/id=${patientT.id }" />
+				</c:when>
+				<c:when test="${folderO.parentF==folderO.parentF.parentF}">
+					<c:url var="previousDocUrl" value="/" />
+				</c:when>
+				<c:when test="${docId==folderO.id}">
+					<c:url var="previousDocUrl" value="/id=${folderO.parentF.id }" />
+				</c:when>
+			</c:choose>
+		</c:when>
+		<c:when test="${not empty flowRequestContext.currentState}">
+			<c:choose>
+				<c:when test="${not empty regimeT}">
+					<c:url var="previousDocUrl" value="/id=${regimeT.id }" />
+				</c:when>
+			</c:choose>
+		</c:when>
+	</c:choose>
+	<c:out value="&#160;" />
+	<a href="${previousDocUrl}"> <b> <c:out value="&lt;" /></b></a>
+	<!-- back button END -->
+
+	<c:out value=" | " />
+	<a href="${contextPath }"> home </a>
+
+	<c:if test="${not empty folderT}">
+		<c:choose>
+			<c:when test="${tilesUrl=='folder'}">
+				<rg:bcFullFolder currentFolderT="${folderT}" />
+			</c:when>
+			<c:otherwise>
+				<rg:bcA_Folder currentFolderT="${folderT}" />
+			</c:otherwise>
+		</c:choose>
+		<c:if test="${not empty patientT }">
+		&gt;
+				<rg:patientLink patientT="${patientT }" tag="span"/>
+		</c:if>
+		<c:if test="${not empty conceptT }">
+		&gt;
+			<rg:conceptName conceptT="${conceptT }" tag="span" withImg="true" withLink="true"/>
+			<c:if test="${not empty regimeT}">
+			&gt;
+				<rg:regimeName taskT="${regimeT }" tag="span" withImg="true" withLink="true"/>
+			</c:if>
+		</c:if>
+	</c:if>
+	<c:if test="${not empty flowRequestContext.currentState }">
+		<c:out value=" ||edit| " />
+		<c:choose>
+			<c:when test="${not empty regimeT}">
+				&gt;
+				<rg:regimeName taskT="${regimeT }" tag="span" withImg="true" withLink="true"/>
+			</c:when>
+		</c:choose>
+	</c:if>
+
+</jsp:root>

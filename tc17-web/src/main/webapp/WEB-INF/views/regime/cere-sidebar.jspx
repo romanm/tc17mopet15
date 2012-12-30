@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:spring="http://www.springframework.org/tags">
+
+	<rg:regimeName taskT="${regimeT }" tag="h3" withImg="true" cssClass="small newstitle"/>
+
+	<rg:patientLink patientT="${sessionPatientT }" tag="div"/>
+<br/>
+<!-- 
+	<h2>
+		<spring:message code="ui_title_views" />
+	</h2>
+ -->
+
+	<rg:titlePane id="view_1" mtitle="ui_title_views" isOpened="${true}">
+		<ul>
+			<li><a href="cere-ed=${regimeT.id }"> <spring:message
+						code="uiTherapySchema" />
+			</a></li>
+			<li><a href="cere-plan2=${regimeT.id }"> <spring:message
+						code="uiChemoTherapyPlan" />
+			</a> 
+			<c:if test="${'plan2'==sessionScope['regimeView']}">
+				<ul>
+					<li><spring:message code="uiChemoTherapyPlan_infoCheck" /></li>
+					<li><spring:message code="uiChemoTherapyPlan_drugNoteCheck" /></li>
+				</ul>
+			</c:if>
+			</li>
+			<li><a href="cere-week=${regimeT.id}"> <spring:message
+						code="uiChemoTherapyWeek" />
+			</a></li>
+		</ul>
+	</rg:titlePane>
+
+	<rg:titlePane id="menu_1" mtitle="ui_menu" isOpened="${true}">
+		<div>
+			<spring:message code="menu_newDrug" />
+			<c:out value=" " />
+			<span class="small"> <spring:message code="menu_drugChemo" />
+			</span>
+		</div>
+		<div>
+			<spring:message code="menu_newDrug" />
+			<c:out value=" " />
+			<span class="small"> <spring:message code="menu_drugSupport" /></span>
+		</div>
+		<hr />
+		<c:if test="${empty patientT }">
+		</c:if>
+		<c:if test="${not empty patientT }">
+			<div> <spring:message code="menu_moveStation" /> </div>
+			<div> <spring:message code="menu_archivPatient" /> </div>
+		</c:if>
+		<rg:titlePane id="menu_2" mtitle="menu_extra" isOpened="${false}">
+			<div> <spring:message code="menu_sameDayTogether" /> </div>
+			<hr />
+			<div> <spring:message code="menu_newLabor" /> </div>
+			<div> <spring:message code="menu_newFinding" /> </div>
+		</rg:titlePane>
+	</rg:titlePane>
+	<rg:timesOrder />
+	<rg:titlePane id="luDoc" mtitle="lastUsedDocuments" isOpened="${true}">
+		<rg:lastUsedDocuments cssClass="small"/>
+	</rg:titlePane>
+	<br />
+	<rg:link2originalDoc docT="${regimeT }" />
+	
+	<div>
+		<spring:message code="ui_previousVersion"/>
+		<div>
+		<c:url var="lOws2" value="/../${link_ows2}/schema=${regimeT.id }" />
+		<a href="${lOws2 }"  target="_blank"> ows2 </a>
+		<br/>
+		<a href="${link_ows1}/protocol?id=${regimeT.id }&amp;part=ed" target="_blank"> ows1 </a>
+		</div>
+	</div>
+	
+</jsp:root>

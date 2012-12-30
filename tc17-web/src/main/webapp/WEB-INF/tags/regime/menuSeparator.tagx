@@ -1,0 +1,5 @@
+<div xmlns:jsp="http://java.sun.com/JSP/Page"
+id="${id}" >
+<jsp:directive.attribute name="id" required="true" description="id"/>
+<script type="text/javascript">menuSeparator("${id}");</script>
+</div>

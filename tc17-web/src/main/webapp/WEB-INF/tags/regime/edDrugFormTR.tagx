@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<jsp:directive.attribute name="taskDrugT"
+		type="org.tasclin1.mopet.domain.Tree" required="true"
+		description="Current folder object" />
+
+	<tr>
+		<td class="${'ed_drug'==flowRequestContext.currentState.id?'noticeCss':''}">${taskDrugT.mtlO.drug }</td>
+		<c:set var="drugDoseT" value="${taskDrugT.drugDoseT}" />
+		<td class="${'ed_dose'==flowRequestContext.currentState.id?'noticeCss':''}">
+			<rg:doseText doseT="${drugDoseT }"/>
+		</td>
+		<td><span class="${'ed_dose'==flowRequestContext.currentState.id?'noticeCss':''}"> ${drugDoseT.mtlO.app} </span></td>
+		<spring:eval var="drugDayT" expression="taskDrugT.getDrugDayT(0)" />
+		<td class="${taskDrugForm.targetT.id == drugDayT.id?'noticeCss':''}">
+			<a  href="javascript:void(0);" id="aEdDay_${drugDayT.id }"
+			onclick="openDay(${drugDayT.id })"
+			>
+				<rg:dayText dayT="${drugDayT }"/>
+			</a>
+		</td>
+		<spring:eval var="drugDayTimesT"
+			expression="drugDayT.getDrugDayTimesT(0)" />
+		<td class="${taskDrugForm.targetT.id == drugDayTimesT.id?'noticeCss':''}">
+				<rg:timesText timesT="${drugDayTimesT }"/>
+		</td>
+	</tr>
+
+	<c:set var="ddNumber" value="1" />
+	<c:forEach var="drugDrugT" items="${taskDrugT.childTs }">
+		<c:if test="${'drug'==drugDrugT.tabName }">
+			<tr>
+				<td>+ ${drugDrugT.mtlO.drug }</td>
+				<c:set var="drugDoseT" value="${drugDrugT.drugDoseT}" />
+				<td>${drugDoseT.mtlO.value} ${drugDoseT.mtlO.unit}</td>
+				<spring:eval var="drugDayT"
+					expression="taskDrugT.getDrugDayT(ddNumber)" />
+				<c:if test="${not empty drugDayT}">
+					<td></td>
+					<td class="${taskDrugForm.targetT.id == drugDayT.id?'noticeCss':''}">
+						<a  href="javascript:void(0);" id="aEdDay_${drugDayT.id }"
+						onclick="openDay(${drugDayT.id })"
+						>
+							<rg:dayText dayT="${drugDayT }"/>
+						</a>
+					</td>
+					<spring:eval var="drugDayTimesT"
+						expression="drugDayT.getDrugDayTimesT(0)" />
+					<td class="${taskDrugForm.targetT.id == drugDayTimesT.id?'noticeCss':''}">
+							<rg:timesText timesT="${drugDayTimesT }"/>
+					</td>
+				</c:if>
+				<c:set var="ddNumber" value="${ddNumber+1 }" />
+			</tr>
+		</c:if>
+	</c:forEach>
+
+</jsp:root>

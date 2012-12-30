@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime">
+	<c:if test="${not empty patientT }">
+		<c:out
+			value="${patientT.mtlO.patient}, ${patientT.mtlO.forename} (${patientT.mtlO.sex}) " />
+	</c:if>
+	<c:choose>
+		<c:when test="${not empty regimeT}">${regimeT.mtlO.task }</c:when>
+		<c:when test="${not empty conceptT}">${conceptT.mtlO.protocol }</c:when>
+		<c:when test="${not empty folderO }">${folderO.folder }</c:when>
+		<c:otherwise>home</c:otherwise>
+	</c:choose>
+</jsp:root>

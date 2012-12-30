@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:form="http://www.springframework.org/tags/form">
+	<jsp:directive.attribute name="modelAttribute" type="java.lang.Object"
+		required="false" description="The form attribute model" />
+	<c:set var="duration" value="${regimeT.taskO.duration }"
+		scope="request" />
+	<div id="modalDialogContainer">
+		<!-- 
+	<form:form id="regimeDrugForm" modelAttribute="${modelAttribute }" 
+	action="${flowExecutionUrl}">
+ -->
+		<form:form id="bodyPopupForm" modelAttribute="taskDrugForm"
+			action="${flowExecutionUrl}">
+			<button
+				class="${'ed_drug'==flowRequestContext.currentState.id?'noticeCss':''}"
+				id="edDrug" type="submit" name="_eventId_edDrug">ed drug</button>
+			<button
+				class="${'ed_dose'==flowRequestContext.currentState.id?'noticeCss':''}"
+				id="edDose" type="submit" name="_eventId_edDose">ed dose</button>
+			<button
+				class="${
+		fn:contains(flowRequestContext.currentState.id,'ed_day')?'noticeCss':''}"
+				id="edDay" type="submit" name="_eventId_edDay">ed day</button>
+			<button
+				class="${
+		fn:contains(flowRequestContext.currentState.id,'ed_times')?'noticeCss':''}"
+				id="edTimes" type="submit" name="_eventId_edTimes">ed times</button>
+			<div class="nofloat" />
+			<c:if
+				test="${fn:contains(flowRequestContext.currentState.id,'ed_day')}">
+				<button
+					class="${
+		'ed_day_abs'==flowRequestContext.currentState.id?'noticeCss':''}"
+					id="edDayAbs" type="submit" name="_eventId_edDayAbs">ed
+					day abs</button>
+				<button
+					class="${'ed_day_week'==flowRequestContext.currentState.id?'noticeCss':''}"
+					id="edDayWeek" type="submit" name="_eventId_edDayWeek">ed
+					day week</button>
+				<button
+					class="${'ed_day_period'==flowRequestContext.currentState.id?'noticeCss':''}"
+					id="edDayPeriod" type="submit" name="_eventId_edDayPeriod">ed
+					day period</button>
+			</c:if>
+			<c:if
+				test="${fn:contains(flowRequestContext.currentState.id,'ed_times')}">
+				<button
+					class="${'ed_times_abs'==flowRequestContext.currentState.id?'noticeCss':''}"
+					id="edTimesAbs" type="submit" name="_eventId_edTimesAbs">ed
+					times abs</button>
+				<button
+					class="${'ed_times_relative'==flowRequestContext.currentState.id?'noticeCss':''}"
+					id="edTimesRelative" type="submit" name="_eventId_edTimesRelative">edTimesRelative</button>
+				<button
+					class="${'ed_times_meal'==flowRequestContext.currentState.id?'noticeCss':''}"
+					id="edTimesMeal" type="submit" name="_eventId_edTimesMeal">ed
+					times week</button>
+			</c:if>
+			<div class="nofloat" />
+			<table width="100%" class="small">
+				<rg:edDrugFormTR taskDrugT="${drugT }" />
+			</table>
+			<hr />
+			<p>
+				<jsp:doBody />
+			</p>
+			<p class="noticeCss">
+			${flowRequestContext.currentState.id} idt=${idt
+				} taskDrugForm.idt=${taskDrugForm.idt}
+				taskDrugForm.targetT=${taskDrugForm.targetT.tabName
+				}.${taskDrugForm.targetT.id}
+			</p>
+		,
+			<c:choose>
+				<c:when test="${'ed_drug'==flowRequestContext.currentState.id}">
+					<button id="previous" type="submit" name="_eventId_previous"
+						disabled="disabled">
+						<c:out value="&lt;&lt; Previous" />
+					</button>
+				</c:when>
+				<c:otherwise>
+					<button id="previous" type="submit" name="_eventId_previous">
+						<c:out value="&lt;&lt; Previous" />
+					</button>
+				</c:otherwise>
+			</c:choose>
+			<c:choose>
+				<c:when
+					test="${fn:contains(flowRequestContext.currentState.id,'ed_times')}">
+					<button id="next" type="submit" name="_eventId_next"
+						disabled="disabled">
+						<c:out value="Next &gt;&gt;" />
+					</button>
+				</c:when>
+				<c:otherwise>
+					<button id="next" type="submit" name="_eventId_next">
+						<c:out value="Next &gt;&gt;" />
+					</button>
+				</c:otherwise>
+			</c:choose>
+			<br />
+			<div class="nowrap">
+				<button id="cancel" type="submit" name="_eventId_cancel">Cancel</button>
+				<button id="save" type="submit" name="_eventId_save">Save</button>
+				<form:hidden path="idt" />
+			</div>
+			<script type="text/javascript">
+			bodyPopupFormButton('previous');
+			bodyPopupFormButton('next');
+			bodyPopupFormButton('cancel');
+			bodyPopupFormButton('save');
+			bodyPopupFormButton('edDrug');
+			bodyPopupFormButton('edDose');
+			bodyPopupFormButton('edDay');
+			bodyPopupFormButton('edTimes');
+
+			bodyPopupFormButton('edDayAbs');
+			bodyPopupFormButton('edDayWeek');
+			bodyPopupFormButton('edDayPeriod');
+
+			bodyPopupFormButton('edTimesAbs');
+			bodyPopupFormButton('edTimesMeal');
+			bodyPopupFormButton('edTimesRelative');
+			function bodyPopupFormButton(elementId){
+				Spring.addDecoration(new Spring.AjaxEventDecoration({
+					elementId:elementId,
+					event:"onclick",
+					formId:"bodyPopupForm",
+					params:{
+						fragments:"body"
+					}
+				}));
+			}
+			</script>
+
+		</form:form>
+	</div>
+
+</jsp:root>

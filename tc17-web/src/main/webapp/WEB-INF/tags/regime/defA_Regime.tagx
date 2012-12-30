@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<jsp:directive.attribute name="taskT"
+		type="org.tasclin1.mopet.domain.Tree" required="true"
+		description="Current folder object" />
+
+	<div class="regimeContent task select" id="task_${taskT.id }">
+			<c:set var="taskId" value="${taskT.id}" />
+			<c:if test="${empty patientT }">
+				<c:set var="taskId" value="${taskT.mtlO.id}" />
+			</c:if>
+		
+		<rg:regimeName taskT="${taskT }" linkId="${taskId }" tag="span" withImg="true" withLink="true"/>
+		
+		<c:if test="${'p.study'==tilesUrl }">
+			<c:forEach var="pRegimeT" items="${patientT.childTs }">
+				<c:if test="${pRegimeT.ref==taskT.id }">
+		begin:
+		${pRegimeT.ofDateT.history.mdate }
+			</c:if>
+			</c:forEach>
+		</c:if>
+	</div>
+
+</jsp:root>

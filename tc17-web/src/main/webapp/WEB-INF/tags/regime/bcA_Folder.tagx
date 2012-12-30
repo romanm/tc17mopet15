@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime">
+	<jsp:directive.attribute name="currentFolderT"
+		type="org.tasclin1.mopet.domain.Tree" required="true"
+		description="Current folder object" />
+	<jsp:directive.attribute name="withoutGt" type="java.lang.Boolean"
+		required="false" description="Current folder object" />
+	<c:if test="${not withoutGt }">
+		&gt;
+		<c:if test="${tilesUrl!='folder'}">
+			<c:out value="..."/>
+		</c:if>
+	</c:if>
+	<rg:folderName tag="span" 
+		img="${currentFolderT==folderT?'Open16.gif':'OpenClose16.gif' }"
+		folderT="${currentFolderT}" withImg="true" withLink="true"/>
+
+</jsp:root>

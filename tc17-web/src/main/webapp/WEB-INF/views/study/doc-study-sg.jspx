@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<c:if test="${not empty conceptDefinitionT }">
+		<rg:titlePane id="studyRegimeDefinition" isOpened="true">
+			<c:forEach var="defT" items="${conceptDefinitionT.childTs }">
+				<c:if test="${'task'==defT.tabName }">
+					<rg:defA_Regime taskT="${defT}" />
+				</c:if>
+			</c:forEach>
+		</rg:titlePane>
+	</c:if>
+	<h2 id="p_${conceptT.id }" class="concept select">
+		<spring:message code="studyWorkflow" />
+	</h2>
+	<rg:conceptBlock blockT="${conceptT }" />
+
+</jsp:root>

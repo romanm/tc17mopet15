@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<jsp:directive.attribute name="docT"
+		type="org.tasclin1.mopet.domain.Tree" required="true"
+		description="Document tree element" />
+	<jsp:directive.attribute name="tag" description="true" />
+	<jsp:directive.attribute name="cssDocClass" required="true" />
+	<jsp:directive.attribute name="cssClass" required="false" />
+	<jsp:directive.attribute name="img" required="false" />
+	<jsp:directive.attribute name="linkId" type="java.lang.Integer"		 required="false" />
+	<jsp:directive.attribute name="withLink" type="java.lang.Boolean"		 required="false" />
+	<jsp:directive.attribute name="withImg" type="java.lang.Boolean"		 required="false" />
+		
+<c:if test="${empty linkId or 0==linkId }">
+	<c:set var="linkId" value="${docT.id}" />
+</c:if>
+<jsp:element name="${tag}">
+	<jsp:attribute name="class"><c:out value="${cssDocClass } ${cssClass }" /></jsp:attribute>
+		<c:if test="${withImg }">
+			<img src="${contextPath }/resources/images/${img}" />
+		</c:if>
+
+	<c:choose>
+		<c:when test="${withLink }">
+		<a href="${contextPath }/id=${linkId}">
+			<jsp:doBody />
+		</a>
+		</c:when>
+		<c:otherwise>
+			<jsp:doBody />
+		</c:otherwise>
+	</c:choose>
+
+	</jsp:element>
+</jsp:root>
