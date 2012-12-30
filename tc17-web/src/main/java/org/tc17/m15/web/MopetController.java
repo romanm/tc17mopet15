@@ -86,36 +86,13 @@ public class MopetController extends BasisController{
 	}
 	private void readConcept(Integer idFolder, String studyPart, Integer idStudy, Model model) {
 		log.debug(1);
-		addStudyView(studyPart, model);
 		mopetService.readFolderO2doc(idFolder, model);
+		addStudyView(studyPart, model);
 		Tree conceptT = mopetService.readConceptDocT(idStudy, model);
 		lastUsedDocuments(model, conceptT);
 		getRequest().getSession().setAttribute("studyPart", studyPart);
 		model.addAttribute("docId", idStudy);
 		log.debug(getRequest().getSession().getAttribute("studyView"));
-	}
-	private void lastUsedDocuments(Model model, Tree docT) {
-		Map<Integer, Tree> lastUsedDocuments = (Map<Integer, Tree>) getRequest().getSession().getAttribute(
-				"lastUsedDocuments");
-		List<Integer> lastUsedDocumentsList = (List<Integer>) getRequest().getSession().getAttribute(
-				"lastUsedDocumentsList");
-		if (null == lastUsedDocuments) {
-			lastUsedDocuments = new HashMap<Integer, Tree>();
-			lastUsedDocumentsList = new ArrayList<Integer>();
-			getRequest().getSession().setAttribute("lastUsedDocuments", lastUsedDocuments);
-			getRequest().getSession().setAttribute("lastUsedDocumentsList", lastUsedDocumentsList);
-			model.addAttribute("lastUsedDocuments", lastUsedDocuments);
-			model.addAttribute("lastUsedDocumentsList", lastUsedDocumentsList);
-		}
-		if (!lastUsedDocuments.containsKey(docT.getId())) {
-			lastUsedDocuments.put(docT.getId(), docT);
-			lastUsedDocumentsList.add(0, docT.getId());
-		}
-		if (lastUsedDocuments.size() > 10) {
-			Integer lastId = lastUsedDocumentsList.get(lastUsedDocumentsList.size() - 1);
-			Tree lastDocT = lastUsedDocuments.get(lastId);
-			lastUsedDocuments.remove(lastDocT);
-		}
 	}
 	// Concept END
 	// Folder

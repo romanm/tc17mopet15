@@ -4,7 +4,9 @@
 </head>
 
 <body class="tundra spring">
-	<div id="headline">rg:headline</div>
+	<div id="headline"
+	th:include="thymeleaf/tc17layout :: headline"
+	>rg:headline</div>
 	<div id="content">
 		<h1 class="regimeContent newstitle"
 			th:include="thymeleaf/tc17layout :: docName "

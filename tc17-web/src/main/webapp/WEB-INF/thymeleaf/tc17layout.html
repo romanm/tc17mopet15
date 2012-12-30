@@ -12,6 +12,18 @@
 </head>
 <body>
 
+<div th:fragment="headline" >
+	<span th:if="${null!=conceptT}">
+	&gt; <a class="conceptContent " 
+		th:text="${conceptT.mtlO.protocol}"
+		th:href="@{'/study-sg'+${studyView}+'='+${regimeT.id}}"/>
+	</span>
+	<span th:if="${null!=regimeT}">
+	&gt; <a class="regimeContent " 
+		th:text="${regimeT.taskO.task}"
+		th:href="@{'/cere-'+${regimeView}+'='+${regimeT.id}}"/>
+	</span>
+</div>
 <div th:fragment="cereEdTable" >
 <table id="ctxTable"
 	th:with="doseFormat='doseUnit'"

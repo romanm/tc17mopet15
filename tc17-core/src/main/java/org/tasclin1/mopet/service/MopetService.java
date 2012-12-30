@@ -284,7 +284,7 @@ public class MopetService {
 	}
 
 	@Transactional(readOnly = true)
-	public void readRegimeDocT(Integer idRegime, Model model) {
+	public Tree readRegimeDocT(Integer idRegime, Model model) {
 		HashMap<Integer, Tree> treeFromId = new HashMap<Integer, Tree>();
 		model.addAttribute(fs_treeFromId, treeFromId);
 		Tree regimeT = setTreeWithMtlO(idRegime, model);
@@ -300,6 +300,7 @@ public class MopetService {
 		initRegimeTimesOrdner(model);
 		log.debug("initRegimeDocT");
 		initRegimeDocT(model);
+		return regimeT;
 	}
 	private void initRegimeTimesOrdner(Model model) {
 		TreeMap<Integer, Tree> timesOrderMap = new TreeMap<Integer, Tree>();

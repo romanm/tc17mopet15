@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.tasclin1.mopet.domain.Tree;
 import org.tasclin1.mopet.service.MopetService;
 
 @Controller
@@ -20,12 +21,25 @@ public class ThymeleafController extends BasisController{
 		this.mopetService = mopetService;
 		// mopetService.init();
 	}
+	@RequestMapping(value = "/study-{studyPart}={idRegime}", method = RequestMethod.GET)
+    public String readConcept(@PathVariable
+    String studyPart, @PathVariable
+    Integer idStudy, Model model) {
+		addStudyView(studyPart, model);
+		Tree conceptT = mopetService.readConceptDocT(idStudy, model);
+		lastUsedDocuments(model, conceptT);
+		getRequest().getSession().setAttribute("studyPart", studyPart);
+		return "thymeleaf/study";
+	}
+
 	@RequestMapping(value = "/cere-{regimeView}={idRegime}", method = RequestMethod.GET)
     public String readRegime(@PathVariable
     String regimeView, @PathVariable
     Integer idRegime, Model model) {
 		addRegimeView(regimeView, model);
-		mopetService.readRegimeDocT(idRegime, model);
+		Tree regimeT = mopetService.readRegimeDocT(idRegime, model);
+		Integer idStudy = regimeT.getDocT().getId();
+		mopetService.readConceptT(idStudy, model);
 		return "thymeleaf/my";
 	}
 	/**
