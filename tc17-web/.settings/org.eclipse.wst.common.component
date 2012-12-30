@@ -7,6 +7,9 @@
         <dependent-module archiveName="tc17-core-0.1.0.BUILD-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/tc17-core/tc17-core">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="tc17-jaxb-0.1.0.BUILD-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/tc17-jaxb/tc17-jaxb">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/web/target/classes"/>
         <property name="context-root" value="tc17-web"/>
     </wb-module>
