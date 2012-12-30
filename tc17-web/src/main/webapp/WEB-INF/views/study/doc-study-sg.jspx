@@ -7,7 +7,7 @@
 	<c:if test="${not empty conceptDefinitionT }">
 		<rg:titlePane id="studyRegimeDefinition" isOpened="true">
 			<c:forEach var="defT" items="${conceptDefinitionT.childTs }">
-				<c:if test="${'task'==defT.tabName }">
+				<c:if test="${'task'==defT.tabName}">
 					<rg:defA_Regime taskT="${defT}" />
 				</c:if>
 			</c:forEach>

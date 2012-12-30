@@ -16,7 +16,7 @@
 	<span th:if="${null!=conceptT}">
 	&gt; <a class="conceptContent " 
 		th:text="${conceptT.mtlO.protocol}"
-		th:href="@{'/study-sg'+${studyView}+'='+${regimeT.id}}"/>
+		th:href="@{'/study-sg'+'='+${conceptT.id}}"/>
 	</span>
 	<span th:if="${null!=regimeT}">
 	&gt; <a class="regimeContent " 

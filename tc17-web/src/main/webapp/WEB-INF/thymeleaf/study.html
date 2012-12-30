@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:include="thymeleaf/tc17layout :: headerFragment">
+</head>
+
+<body class="tundra spring">
+<div id="headline"
+	th:include="thymeleaf/tc17layout :: headline"
+	>rg:headline
+</div>
+<div id="content">
+	<h1 class="conceptContent newstitle" th:text="${conceptT.mtlO.protocol}"/>
+	<div id="defTitle" th:attr="title=#{studyRegimeDefinition}" >
+		<div th:each="regimeT : ${conceptDefinitionT.childTs}"
+			th:if="${'task'==regimeT.tabName}"
+		>
+		<a class="regimeContent"
+			th:text="${regimeT.taskO.task}"
+			th:href="@{'/cere-'+${regimeView}+'='+${regimeT.id}}"/>
+		</div>
+	</div>
+	<script type="text/javascript">titlePane("defTitle",true)</script>
+</div>
+<h2 th:attr="id=${'p_'+conceptT.id }" class="concept select"
+	th:text="#{studyWorkflow}"
+/>
+<div id="sidebar">
+sidebar
+</div>
+</body>
+</html>

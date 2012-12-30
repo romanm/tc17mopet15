@@ -253,8 +253,10 @@ public class MopetService {
 	public Tree readConceptDocT(Integer idStudy, Model model) {
 		Tree conceptT = readConceptT(idStudy, model);
 		for (Tree t1 : conceptT.getChildTs()) {
-			if ("definition".equals(t1.getTabName()))
+			if ("definition".equals(t1.getTabName())){
+				log.debug(t1);
 				model.addAttribute("conceptDefinitionT", t1);
+			}
 			setMtlO(t1, model);
 			for (Tree t2 : t1.getChildTs()) {
 				setMtlO(t2, model);

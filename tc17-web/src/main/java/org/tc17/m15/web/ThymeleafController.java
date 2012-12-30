@@ -21,12 +21,15 @@ public class ThymeleafController extends BasisController{
 		this.mopetService = mopetService;
 		// mopetService.init();
 	}
-	@RequestMapping(value = "/study-{studyPart}={idRegime}", method = RequestMethod.GET)
+	@RequestMapping(value = "/study-{studyPart}={idStudy}", method = RequestMethod.GET)
     public String readConcept(@PathVariable
     String studyPart, @PathVariable
     Integer idStudy, Model model) {
+		log.debug(1);
 		addStudyView(studyPart, model);
+		log.debug(2);
 		Tree conceptT = mopetService.readConceptDocT(idStudy, model);
+		log.debug(3);
 		lastUsedDocuments(model, conceptT);
 		getRequest().getSession().setAttribute("studyPart", studyPart);
 		return "thymeleaf/study";
@@ -40,7 +43,7 @@ public class ThymeleafController extends BasisController{
 		Tree regimeT = mopetService.readRegimeDocT(idRegime, model);
 		Integer idStudy = regimeT.getDocT().getId();
 		mopetService.readConceptT(idStudy, model);
-		return "thymeleaf/my";
+		return "thymeleaf/regime";
 	}
 	/**
 	 * ThymeLeaf my
@@ -51,7 +54,7 @@ public class ThymeleafController extends BasisController{
 		mopetService.readRegimeDocT(idRegime, model);
 		Object object = model.asMap().get(MopetService.REGIMET);
 		System.out.println(object);
-		return "thymeleaf/my";
+		return "thymeleaf/regime";
 	}
 	/**
 	 * ThymeLeaf layout
