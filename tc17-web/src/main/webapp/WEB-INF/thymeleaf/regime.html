@@ -30,7 +30,7 @@
 			th:include="thymeleaf/tc17layout :: docName "
 			th:with="docName=${regimeT.taskO.task }" />
 		
-	<div id="view_1" title="View" >
+	<div id="view_1" title="View" class="titlePane" isopen="true">
 		<ul>
 			<li> <a th:href="@{'/cere-ed='+${regimeT.id}+'.htm'}"
 				th:text="#{uiTherapySchema}"
@@ -47,9 +47,9 @@
 				th:text="#{uiChemoTherapyWeek}"
 			>week</a> </li>
 		</ul>
-		<script type="text/javascript">titlePane("view_1",true)</script>
 	</div>
 	</div>
+	<script type="text/javascript">titlePaneAll()</script>
 	
 	<div>
 		<h4>defeloper</h4>

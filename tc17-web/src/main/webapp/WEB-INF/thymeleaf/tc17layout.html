@@ -12,6 +12,40 @@
 </head>
 <body>
 
+<div th:fragment="conceptBlock" th:remove="tag">
+<div th:each="wfBlockT:${wfBlockParentT.childTs}" th:remove="tag" 
+	th:switch="${wfBlockT.tabName}"
+>
+	<div th:case="'task'" class="task select regimeContent">
+		<a th:text="${wfBlockT.taskO.task}"
+			th:href="@{'/cere-'+${regimeView}+'='+${wfBlockT.taskO.id}}"/>
+	</div>
+	<fieldset th:case="'choice'">
+		<legend class="choice select" th:id="${'c_'+wfBlockT.id}"
+ 			th:text="#{conceptChoice}" />
+	 		<div th:id="${'arm_'+armT.id }" th:attr="title=${'arm_'+armT.mtlO.arm }"
+	 				th:each="armT:${wfBlockT.childTs}" th:if="${armT.arm}"
+			class="arm select titlePane" style="float: left;"
+	 		  isopen="true"
+	 		>
+	 		<div th:if="${null==armT.childTs}">..</div>
+	 		<div th:if="${null!=armT.childTs}"
+	 			th:with="wfBlockParentT=${armT}"
+	 			th:include="thymeleaf/tc17layout :: conceptBlock"
+	 			th:remove="tag"
+	 		>.block.</div>
+	 	</div>
+	</fieldset>
+</div></div>
+
+<div th:fragment="conceptBlock2">
+conceptBlock
+<div th:include="thymeleaf/study :: conceptBlock" 
+	th:with="wfBlockParentT=${armT}"
+	th:remove="tag"/>
+a1
+</div>
+
 <div th:fragment="headline" >
 	<span th:if="${null!=conceptT}">
 	&gt; <a class="conceptContent " 

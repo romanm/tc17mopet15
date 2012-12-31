@@ -10,22 +10,31 @@
 </div>
 <div id="content">
 	<h1 class="conceptContent newstitle" th:text="${conceptT.mtlO.protocol}"/>
-	<div id="defTitle" th:attr="title=#{studyRegimeDefinition}" >
+	<div id="defTitle" th:attr="title=#{studyRegimeDefinition}" 
+		class="titlePane" isopen="true"
+	>
 		<div th:each="regimeT : ${conceptDefinitionT.childTs}"
 			th:if="${'task'==regimeT.tabName}"
+			class="task select regimeContent"
 		>
-		<a class="regimeContent"
-			th:text="${regimeT.taskO.task}"
+		<a th:text="${regimeT.taskO.task}"
 			th:href="@{'/cere-'+${regimeView}+'='+${regimeT.id}}"/>
 		</div>
 	</div>
-	<script type="text/javascript">titlePane("defTitle",true)</script>
 </div>
+<tc17rem th:remove="all">Workflow</tc17rem>
 <h2 th:attr="id=${'p_'+conceptT.id }" class="concept select"
 	th:text="#{studyWorkflow}"
 />
+
+<div th:with="wfBlockParentT=${conceptT}"
+	th:include="thymeleaf/tc17layout :: conceptBlock"
+	th:remove="tag"
+/>
+
 <div id="sidebar">
 sidebar
 </div>
+<script type="text/javascript">titlePaneAll()</script>
 </body>
 </html>

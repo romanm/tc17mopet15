@@ -1,3 +1,15 @@
+function titlePaneAll(){
+	console.log("titlePaneAll BEGIN");
+	// make select only for contextmenu, only by right maus klick, make not select for link maus klick
+	dojo.query(".titlePane").forEach(function(el) {
+	Spring.addDecoration(new Spring.ElementDecoration({
+	elementId:el.id, widgetType:"dijit.TitlePane" ,widgetAttrs: {
+		title:el.title,open:el.getAttribute("isopen")
+	}
+	}));
+	});
+}
+
 function titlePane(tpId,isOpened){
 	Spring.addDecoration(new Spring.ElementDecoration({
 	elementId:tpId, widgetType:"dijit.TitlePane" ,widgetAttrs: {
