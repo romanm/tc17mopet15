@@ -21,17 +21,29 @@ public class ThymeleafController extends BasisController{
 		this.mopetService = mopetService;
 		// mopetService.init();
 	}
-	@RequestMapping(value = "/study-{studyPart}={idStudy}", method = RequestMethod.GET)
+	@RequestMapping(value = "/thome", method = RequestMethod.GET)
+	public String home(Model model) {
+		mopetService.home(model);
+		return "thymeleaf/home";
+	}
+	// Folder
+	@RequestMapping(value = "/tfolder={idFolder}", method = RequestMethod.GET)
+	public String folder(@PathVariable
+			Integer idFolder, Model model) {
+		mopetService.readFolderO2folder(idFolder, model);
+		return "thymeleaf/folder";
+	}
+	// Folder END
+	@RequestMapping(value = "/study-{studyView}={idStudy}", method = RequestMethod.GET)
     public String readConcept(@PathVariable
-    String studyPart, @PathVariable
+    String studyView, @PathVariable
     Integer idStudy, Model model) {
-		log.debug(1);
-		addStudyView(studyPart, model);
-		log.debug(2);
+		addStudyView(studyView, model);
 		Tree conceptT = mopetService.readConceptDocT(idStudy, model);
-		log.debug(3);
+		Integer idFolder = conceptT.getParentT().getId();
+		mopetService.readFolderO2doc(idFolder, model);
 		lastUsedDocuments(model, conceptT);
-		getRequest().getSession().setAttribute("studyPart", studyPart);
+		getRequest().getSession().setAttribute("studyView", studyView);
 		return "thymeleaf/study";
 	}
 

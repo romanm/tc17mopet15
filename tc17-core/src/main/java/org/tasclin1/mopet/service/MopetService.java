@@ -98,6 +98,7 @@ public class MopetService {
 		return readTreeWithMtlO(id, model);
 	}
 	private void addConceptRegime(Tree conceptT, Model model) {
+		log.debug(1);
 		if (!model.asMap().containsKey("conceptRegime"))
 			model.addAttribute("conceptRegime", new HashMap<Tree, List<Tree>>());
 		for (Tree defT : conceptT.getChildTs())
@@ -117,8 +118,10 @@ public class MopetService {
 		Folder folderO = readFolderO2doc(idFolder, model);
 		Tree folderT = setTreeWithMtlO(idFolder, model);
 		model.addAttribute("folderT", folderT);
+		log.debug(1);
 		for (Tree tree : folderT.getChildTs()) {
 			setMtlO(tree, model);
+			log.debug(2);
 			if (tree.isConcept())
 				addConceptRegime(tree, model);
 		}

@@ -76,7 +76,6 @@ public class MopetController extends BasisController{
 		readConcept(idFolder, studyPart, idStudy, model);
 	}
 	private void readConcept(Integer idFolder, String studyPart, Integer idStudy, Model model) {
-		log.debug(1);
 		mopetService.readFolderO2doc(idFolder, model);
 		addStudyView(studyPart, model);
 		Tree conceptT = mopetService.readConceptDocT(idStudy, model);

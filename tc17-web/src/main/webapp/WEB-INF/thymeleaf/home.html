@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="thymeleaf/tc17layout :: headerFragment">
+</head>
+
+<body class="tundra spring">
+	<div id="headline" th:include="thymeleaf/tc17layout :: headline">rg:headline</div>
+	<div id="content">
+		<div class="home">			basic
+			<div>
+				<a th:href="@{'/tfolder='+${patientF.id}}">Patient folder </a>
+			</div>
+			<div>
+				<a th:href="@{'/tfolder='+${protocolF.id}}">Study folder</a>
+			</div>
+		</div>
+		<hr />
+		<div>			extra
+			<div>
+				<a th:href="@{'/tfolder='+${drugF.id}}">Medikament folder</a>
+			</div>
+		</div>
+		<hr />
+		<div>lastUsedDocuments rg:lastUsedDocuments</div>
+	</div>
+	<div id="sidebar">sidebar</div>
+</body>
+</html>

@@ -38,15 +38,16 @@
 	</fieldset>
 </div></div>
 
-<div th:fragment="conceptBlock2">
-conceptBlock
-<div th:include="thymeleaf/study :: conceptBlock" 
-	th:with="wfBlockParentT=${armT}"
-	th:remove="tag"/>
-a1
-</div>
-
 <div th:fragment="headline" >
+	|
+	<span>
+	<a th:text="'home'"
+		th:href="@{/thome}"/>
+	</span>
+	<span th:if="${null!=folderT}">
+	&gt; <a th:text="${folderT.mtlO.folder}"
+		th:href="@{'/folder'+'='+${folderT.id}}"/>
+	</span>
 	<span th:if="${null!=conceptT}">
 	&gt; <a class="conceptContent " 
 		th:text="${conceptT.mtlO.protocol}"
@@ -58,6 +59,7 @@ a1
 		th:href="@{'/cere-'+${regimeView}+'='+${regimeT.id}}"/>
 	</span>
 </div>
+
 <div th:fragment="cereEdTable" >
 <table id="ctxTable"
 	th:with="doseFormat='doseUnit'"
