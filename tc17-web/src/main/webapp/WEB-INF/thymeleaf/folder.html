@@ -19,7 +19,7 @@
 		<div class="newstitle" />
 	</div>
 	<p th:each="docT:${folderT.childTs }">
-		<div th:if="${docT.concept}">
+		<div th:if="${docT.concept}" th:remove="tag">
 			<div class="conceptContent">
 				<a th:text="${docT.mtlO.protocol}"
 					th:href="@{'/study-sg'+'='+${docT.id}}" />

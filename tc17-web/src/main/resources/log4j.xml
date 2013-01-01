@@ -20,6 +20,10 @@
 		<level value="debug" />
 		<appender-ref ref="console2" />
 	</logger>
+	<logger name="org.tc17.jaxb" >
+		<level value="debug" />
+		<appender-ref ref="console2" />
+	</logger>
 	<logger name="org.tasclin1.mopet" >
 		<level value="debug" />
 		<appender-ref ref="console2" />

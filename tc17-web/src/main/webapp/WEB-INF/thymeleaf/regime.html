@@ -25,17 +25,17 @@
 
 	<div id="sidebar">
 		<div id="titleInline">titleInline</div>
-		sidebar
+		<br/>
 		<h3 class="regimeContent newstitle small"
 			th:include="thymeleaf/tc17layout :: docName "
 			th:with="docName=${regimeT.taskO.task }" />
 		
 	<div id="view_1" title="View" class="titlePane" isopen="true">
 		<ul>
-			<li> <a th:href="@{'/cere-ed='+${regimeT.id}+'.htm'}"
+			<li> <a th:href="@{'/cere-ed='+${regimeT.id}}"
 				th:text="#{uiTherapySchema}"
 			>ed</a> </li>
-			<li> <a th:href="@{'/cere-plan='+${regimeT.id}+'.htm'}"
+			<li> <a th:href="@{'/cere-plan='+${regimeT.id}}"
 				th:text="#{uiChemoTherapyPlan}"
 			>plan</a> 
 				<ul th:if="${'plan'==regimeView}">
@@ -43,9 +43,16 @@
 					<li th:text="#{uiChemoTherapyPlan_drugNoteCheck}" />
 				</ul>
 			</li>
-			<li> <a th:href="@{'/cere-week='+${regimeT.id}+'.htm'}"
+			<li> <a th:href="@{'/cere-week='+${regimeT.id}}"
 				th:text="#{uiChemoTherapyWeek}"
 			>week</a> </li>
+		</ul>
+	</div>
+	<div id="view_2" title="forDeveloper" class="titlePane" isopen="true">
+		<ul>
+			<li><a th:href="@{'/xml=x_'+${regimeT.id}}">xml_jaxb</a></li>
+			<li><a th:href="@{'/xxml=x_'+${regimeT.id}}">xxml_jaxb</a>
+			</li>
 		</ul>
 	</div>
 	</div>
