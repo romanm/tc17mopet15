@@ -1,5 +1,7 @@
 package org.tc17.jaxb.core;
 
+import java.util.ArrayList;
+
 import javax.xml.bind.annotation.XmlAttribute;
 
 import org.tasclin1.mopet.domain.Tree;
@@ -40,6 +42,18 @@ public class Taskx extends Treex {
 
     public void setTaskName(String taskName) {
 	this.taskName = taskName;
+    }
+
+    ArrayList<Drugx> drug;
+
+    public ArrayList<Drugx> getDrug() {
+	if (null == drug)
+	    drug = new ArrayList<Drugx>();
+	return drug;
+    }
+
+    public void setDrug(ArrayList<Drugx> drug) {
+	this.drug = drug;
     }
 
 }

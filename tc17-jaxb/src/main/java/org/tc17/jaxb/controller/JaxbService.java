@@ -21,6 +21,7 @@ import org.tc17.jaxb.core.Dayx;
 import org.tc17.jaxb.core.Dosex;
 import org.tc17.jaxb.core.Drugx;
 import org.tc17.jaxb.core.TaskRegimex;
+import org.tc17.jaxb.core.Taskx;
 import org.tc17.jaxb.core.Timesx;
 import org.tc17.jaxb.core.Treex;
 
@@ -28,6 +29,30 @@ import org.tc17.jaxb.core.Treex;
 public class JaxbService {
 	protected final Log log = LogFactory.getLog(getClass());
 	public Tree buildTree(TaskRegimex taskX) {
+		Tree taskT = buildTree(taskX, "task");
+    	taskT.setMtlO(new Task());
+    	taskT.getTaskO().setTask(taskX.getTaskName());
+    	taskT.getTaskO().setTaskvar(taskX.getTaskvar());
+    	taskT.getTaskO().setType(taskX.getType());
+    	if(taskX.getDrug().size()>0){
+    		taskT.setChildTs(new ArrayList<Tree>());
+    		for (Drugx drugX : taskX.getDrug()) {
+    			Tree buildTree = buildTree(drugX);
+    			buildTree(taskT, buildTree);
+    		}
+    	}
+    	if(taskX.getTask().size()>0){
+    		if(!taskT.hasChild())
+    		taskT.setChildTs(new ArrayList<Tree>());
+    		for (Taskx taskTaskX : taskX.getTask()) {
+    			Tree buildTree = buildTree(taskTaskX);
+    			buildTree(taskT, buildTree);
+    		}
+    		
+    	}
+    	return taskT;
+    }
+	private Tree buildTree(Taskx taskX) {
     	Tree taskT = buildTree(taskX, "task");
     	taskT.setMtlO(new Task());
     	taskT.getTaskO().setTask(taskX.getTaskName());
@@ -40,8 +65,8 @@ public class JaxbService {
     			buildTree(taskT, buildTree);
     		}
     	}
-    	return taskT;
-    }
+		return taskT;
+	}
 	public Tree buildTree(Drugx drugX) {
     	Tree drugT = buildTree(drugX, "drug");
     	drugT.setMtlO(new Drug());
@@ -55,16 +80,15 @@ public class JaxbService {
     			buildTree(drugT, buildTree);
     		}
     	}
-    	if(null!=drugX.getDose())
-    	{
+    	if(null!=drugX.getDose()){
     		Tree buildTree = buildTree(drugX.getDose());
     		buildTree(drugT, buildTree);
     	}
     	return drugT;
     }
-	private void buildTree(Tree drugT, Tree buildTree) {
-		drugT.getChildTs().add(buildTree);
-		buildTree.setParentT(drugT);
+	private void buildTree(Tree parentT, Tree childT) {
+		parentT.getChildTs().add(childT);
+		childT.setParentT(parentT);
 	}
 	private Tree buildTree(Dayx dayX) {
 		Tree dayT = buildTree(dayX, "day");
@@ -98,10 +122,10 @@ public class JaxbService {
     	return doseT;
 	}
 	private Tree buildTree(Treex  treeX, String tabName) {
-		Tree doseT = new Tree();
-    	doseT.setId(treeX.getId());
-		doseT.setTabName(tabName);
-		return doseT;
+		Tree tree = new Tree();
+    	tree.setId(treeX.getId());
+		tree.setTabName(tabName);
+		return tree;
 	}
 	public TaskRegimex loadTaskx(Integer pasteId) {
     	TaskRegimex taskX = null;

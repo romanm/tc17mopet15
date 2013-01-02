@@ -39,18 +39,6 @@ public class TaskRegimex extends Taskx {
 	this.labor = labor;
     }
 
-    ArrayList<Drugx> drug;
-
-    public ArrayList<Drugx> getDrug() {
-	if (null == drug)
-	    drug = new ArrayList<Drugx>();
-	return drug;
-    }
-
-    public void setDrug(ArrayList<Drugx> drug) {
-	this.drug = drug;
-    }
-
     /*
      * ArrayList<TaskOnex> taskOne; public ArrayList<TaskOnex> getTaskOne() { if (null == taskOne) taskOne = new
      * ArrayList<TaskOnex>(); return taskOne; }
