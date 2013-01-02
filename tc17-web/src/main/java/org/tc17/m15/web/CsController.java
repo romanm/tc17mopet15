@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.tasclin1.mopet.domain.Tree;
+import org.tasclin1.mopet.service.MopetService;
 import org.tc17.jaxb.controller.JaxbService;
 import org.tc17.jaxb.core.TaskRegimex;
 
@@ -17,7 +18,8 @@ public class CsController extends BasisController{
 	protected final Log log = LogFactory.getLog(getClass());
     @Autowired
     private JaxbService jaxbService;
-
+    @Autowired
+    private MopetService mopetService;
 	@RequestMapping(value = "/cs/cere-{regimeView}={idRegime}", method = RequestMethod.GET)
     public String readRegime(@PathVariable
     String regimeView, @PathVariable
@@ -27,6 +29,7 @@ public class CsController extends BasisController{
     	Tree regimeT = jaxbService.buildTree(taskx);
     	log.debug(regimeT);
     	model.addAttribute("regimeT", regimeT);
+    	mopetService.initRegimeDocT(model);
 		return "thymeleaf/regime";
 	}
 

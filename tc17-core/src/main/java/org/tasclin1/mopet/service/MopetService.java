@@ -462,10 +462,15 @@ public class MopetService {
 		model.addAttribute(MopetService.drugTimesM, new HashMap<Tree, List<Tree>>());
 		model.addAttribute(MopetService.drugDrugM, new HashMap<Tree, List<Tree>>());
 		for (Tree t1 : regimeT.getChildTs()) {
+			if(t1.hasChild())
 			for (Tree t2 : t1.getChildTs()) {
+				log.debug(t2);
 				initModel(model, t2);
+				if(t2.hasChild())
 				for (Tree t3 : t2.getChildTs()) {
+					log.debug(t3);
 					initModel(model, t3);
+					if(t3.hasChild())
 					for (Tree t4 : t3.getChildTs()) {
 						initModel(model, t4);
 					}

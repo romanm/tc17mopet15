@@ -11,19 +11,24 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
+import org.tasclin1.mopet.domain.Day;
+import org.tasclin1.mopet.domain.Dose;
 import org.tasclin1.mopet.domain.Drug;
 import org.tasclin1.mopet.domain.Task;
+import org.tasclin1.mopet.domain.Times;
 import org.tasclin1.mopet.domain.Tree;
+import org.tc17.jaxb.core.Dayx;
 import org.tc17.jaxb.core.Dosex;
 import org.tc17.jaxb.core.Drugx;
 import org.tc17.jaxb.core.TaskRegimex;
+import org.tc17.jaxb.core.Timesx;
+import org.tc17.jaxb.core.Treex;
 
 @Service("jaxbService")
 public class JaxbService {
 	protected final Log log = LogFactory.getLog(getClass());
 	public Tree buildTree(TaskRegimex taskX) {
-    	Tree taskT = new Tree();
-    	taskT.setTabName("task");
+    	Tree taskT = buildTree(taskX, "task");
     	taskT.setMtlO(new Task());
     	taskT.getTaskO().setTask(taskX.getTaskName());
     	taskT.getTaskO().setTaskvar(taskX.getTaskvar());
@@ -32,27 +37,72 @@ public class JaxbService {
     		taskT.setChildTs(new ArrayList<Tree>());
     		for (Drugx drugX : taskX.getDrug()) {
     			Tree buildTree = buildTree(drugX);
-    			taskT.getChildTs().add(buildTree);
+    			buildTree(taskT, buildTree);
     		}
     	}
     	return taskT;
     }
 	public Tree buildTree(Drugx drugX) {
-    	Tree drugT = new Tree();
-    	drugT.setTabName("drug");
+    	Tree drugT = buildTree(drugX, "drug");
     	drugT.setMtlO(new Drug());
     	drugT.getDrugO().setDrug(drugX.getDrug());
     	drugT.getDrugO().setGeneric(new Drug());
     	drugT.getDrugO().getGeneric().setDrug(drugX.getGeneric());
-    	ArrayList<Tree> taskTchilds = new ArrayList<Tree>();
-    	Dosex dose = drugX.getDose();
-    	if(null!=dose)
+    	if(drugX.getDay().size()>0){
+    		drugT.setChildTs(new ArrayList<Tree>());
+    		for (Dayx dayX : drugX.getDay()) {
+    			Tree buildTree = buildTree(dayX);
+    			buildTree(drugT, buildTree);
+    		}
+    	}
+    	if(null!=drugX.getDose())
     	{
-    		
+    		Tree buildTree = buildTree(drugX.getDose());
+    		buildTree(drugT, buildTree);
     	}
     	return drugT;
     }
-	
+	private void buildTree(Tree drugT, Tree buildTree) {
+		drugT.getChildTs().add(buildTree);
+		buildTree.setParentT(drugT);
+	}
+	private Tree buildTree(Dayx dayX) {
+		Tree dayT = buildTree(dayX, "day");
+		dayT.setMtlO(new Day());
+    	dayT.getDayO().setAbs(dayX.getAbs());
+    	dayT.getDayO().setNewtype(dayX.getNewtype());
+    	if(dayX.getTimes().size()>0){
+    		dayT.setChildTs(new ArrayList<Tree>());
+    		for (Timesx timesX : dayX.getTimes()) {
+    			Tree buildTree = buildTree(timesX);
+    			buildTree(dayT, buildTree);
+    		}
+    	}
+		return dayT;
+	}
+	private Tree buildTree(Timesx timesX) {
+		Tree timesT = buildTree(timesX, "times");
+		timesT.setMtlO(new Times());
+		timesT.getTimesO().setAbs(timesX.getAbs());
+		timesT.getTimesO().setApporder(timesX.getApporder());
+		timesT.getTimesO().setRelunit(timesX.getRelunit());
+		timesT.getTimesO().setRelvalue(timesX.getRelvalue());
+		return timesT;
+	}
+	public Tree buildTree(Dosex doseX) {
+		Tree doseT = buildTree(doseX, "dose");
+    	doseT.setMtlO(new Dose());
+    	doseT.getDoseO().setValue(doseX.getValue());
+    	doseT.getDoseO().setUnit(doseX.getUnit());
+    	doseT.getDoseO().setApp(doseX.getApp());
+    	return doseT;
+	}
+	private Tree buildTree(Treex  treeX, String tabName) {
+		Tree doseT = new Tree();
+    	doseT.setId(treeX.getId());
+		doseT.setTabName(tabName);
+		return doseT;
+	}
 	public TaskRegimex loadTaskx(Integer pasteId) {
     	TaskRegimex taskX = null;
     	JAXBContext newInstance;
