@@ -2,8 +2,6 @@ package org.tc17.jaxb.controller;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -19,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.tasclin1.mopet.domain.Drug;
-import org.tasclin1.mopet.domain.Task;
 import org.tasclin1.mopet.domain.Tree;
 import org.tasclin1.mopet.service.MopetService;
 import org.tc17.jaxb.core.Appx;
@@ -34,7 +30,6 @@ import org.tc17.jaxb.core.Patientx;
 import org.tc17.jaxb.core.Pvariablex;
 import org.tc17.jaxb.core.TaskPatientx;
 import org.tc17.jaxb.core.TaskRegimex;
-import org.tc17.jaxb.core.Taskx;
 import org.tc17.jaxb.core.Timesx;
 import org.tc17.jaxb.core.Treex;
 
@@ -43,6 +38,8 @@ public class JaxbController {
     protected final Log log = LogFactory.getLog(getClass());
     @Autowired
     private MopetService mopetService;
+    @Autowired
+    private JaxbService jaxbService;
 
     @RequestMapping(value = "/jaxb_drug2", method = RequestMethod.POST)
     public @ResponseBody
@@ -87,67 +84,15 @@ public class JaxbController {
     	int pasteNodeId2 = Integer.parseInt(pasteNodeId);
     	// String readJaxb = readJaxb(pasteId);
     	log.debug("-------------" + pasteNodeId2);
-    	Treex taskx = loadTaskx(pasteNodeId2);
+    	TaskRegimex taskx = jaxbService.loadTaskx(pasteNodeId2);
 //    	Drugx drugx = loadDrugx(pasteNodeId2);
 //    	Tree drugT = buildTree(drugx);
 //    	log.debug("-------------" + drugT);
+    	Tree buildTree = jaxbService.buildTree(taskx);
+    	log.debug(buildTree);
     	return taskx;
     }
-    public Tree buildTree(TaskRegimex taskX) {
-    	Tree taskT = new Tree();
-    	taskT.setTabName("task");
-    	taskT.setMtlO(new Task());
-    	taskT.getTaskO().setTask(taskX.getTaskName());
-    	taskT.getTaskO().setTaskvar(taskX.getTaskvar());
-    	taskT.getTaskO().setType(taskX.getType());
-    	if(taskX.getDrug().size()>0){
-    		taskT.setChildTs(new ArrayList<Tree>());
-    		for (Drugx drugX : taskX.getDrug()) {
-    			Tree buildTree = buildTree(drugX);
-    			taskT.getChildTs().add(buildTree);
-    		}
-    	}
-    	return taskT;
-    }
-    public Tree buildTree(Drugx drugX) {
-    	Tree drugT = new Tree();
-    	drugT.setTabName("drug");
-    	drugT.setMtlO(new Drug());
-    	drugT.getDrugO().setDrug(drugX.getDrug());
-    	drugT.getDrugO().setGeneric(new Drug());
-    	drugT.getDrugO().getGeneric().setDrug(drugX.getGeneric());
-    	ArrayList<Tree> taskTchilds = new ArrayList<Tree>();
-    	Dosex dose = drugX.getDose();
-    	if(null!=dose)
-    	{
-    		
-    	}
-    	return drugT;
-    }
-    private TaskRegimex loadTaskx(Integer pasteId) {
-    	TaskRegimex taskX = null;
-    	JAXBContext newInstance;
-    	URL url;
-    	log.debug(1);
-    	try {
-    		log.debug(2);
-    		newInstance = JAXBContext.newInstance(TaskRegimex.class);
-    		log.debug(3);
-    		Unmarshaller createUnmarshaller = newInstance.createUnmarshaller();
-    		log.debug(4);
-    		String urlStr = "http://localhost:8080/tc17-web/xml=x_" + pasteId;
-    		log.debug(urlStr);
-			url = new URL(urlStr);
-			log.debug(url);
-    		taskX = (TaskRegimex) createUnmarshaller.unmarshal(url);
-    		log.debug(taskX);
-    	} catch (MalformedURLException e) {
-    		e.printStackTrace();
-    	} catch (JAXBException e) {
-    		e.printStackTrace();
-    	}
-    	return taskX;
-    }
+    
     private Drugx loadDrugx(Integer pasteId) {
     	Drugx drugx = null;
     	JAXBContext newInstance;
