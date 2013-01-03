@@ -3,7 +3,10 @@
 
 <div th:fragment="doseHtml" th:switch="${doseFormat}">
 <div th:switch="${doseFormat}" th:remove="tag">
-	<span th:case="'doseUnit'" th:text="${doseT.doseO.value+' '+doseT.doseO.unit}"/>
+	<span th:case="'doseUnit'" th:remove="tag">
+		<span th:if="${doseT.mtlDoseO}" th:text="${doseT.doseO.value+' '+doseT.doseO.unit}"/>
+		<span th:if="${!doseT.mtlDoseO}">###</span>
+	</span>
 	<span th:case="'doseUnitApp'" 
 		th:text="${doseT.doseO.value+' '+doseT.doseO.unit+' '+doseT.doseO.app}"/>
 	<span th:case="*" th:text="${'doseFormat='+doseFormat}"/>

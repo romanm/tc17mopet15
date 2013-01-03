@@ -6,14 +6,14 @@ import org.tasclin1.mopet.domain.Tree;
 
 public class TaskOnex extends Treex {
 
-    ArrayList<Dayx> day;
-
     public TaskOnex() {
     }
 
     public TaskOnex(Tree tree) {
 	super(tree);
     }
+
+    ArrayList<Dayx> day;
 
     public ArrayList<Dayx> getDay() {
 	if (null == day)

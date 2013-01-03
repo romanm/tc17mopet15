@@ -23,7 +23,9 @@ public class Dayx extends Treex {
 	}
     }
 
+    private String abs, newtype;
     ArrayList<Timesx> times;
+    ArrayList<Exprx> expr;
 
     public ArrayList<Timesx> getTimes() {
 	if (null == times)
@@ -35,7 +37,17 @@ public class Dayx extends Treex {
 	this.times = times;
     }
 
-    private String abs, newtype;
+
+	public void setExpr(ArrayList<Exprx> expr) {
+		this.expr = expr;
+	}
+
+	public ArrayList<Exprx> getExpr() {
+		if (null == expr)
+			expr = new ArrayList<Exprx>();
+		return expr;
+	}
+
 
     public void setNewtype(String newtype) {
 	this.newtype = newtype;
@@ -54,4 +66,16 @@ public class Dayx extends Treex {
     public String getNewtype() {
 	return newtype;
     }
+
+    ArrayList<Noticex> notice;
+    public ArrayList<Noticex> getNotice() {
+		if (null == notice)
+			notice = new ArrayList<Noticex>();
+		return notice;
+	}
+
+	public void setNotice(ArrayList<Noticex> notice) {
+		this.notice = notice;
+	}
+
 }

@@ -24,7 +24,7 @@ import org.tasclin1.mopet.domain.Tree;
 public class MopetServiceTest {
 	@Autowired
 	private MopetService mopetService;
-	@Test
+//	@Test
 	public void testRegime906823() {
 		Model model = new ExtendedModelMap();
 		Integer idRegime=906823;
@@ -47,7 +47,7 @@ public class MopetServiceTest {
 			System.out.println("-drugDrugM--"+drugDrugM.get(tree));
 		}
 	}
-//	@Test
+	@Test
 	public void testFolder9930() {
 		System.out.println("---");
 		System.out.println("---"+mopetService);

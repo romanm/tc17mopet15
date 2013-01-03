@@ -206,9 +206,11 @@ public class Tree implements Serializable {
     }
 
     public boolean isDose() {
-	return getMtlO() instanceof Dose || "dose".equals(getTabName());
+	return isMtlDoseO() || "dose".equals(getTabName());
     }
-
+    public boolean isMtlDoseO() {
+    	return getMtlO() instanceof Dose;
+        }
     public boolean isExpr() {
 	return getMtlO() instanceof Expr || "expr".equals(getTabName());
     }
@@ -569,7 +571,9 @@ public class Tree implements Serializable {
     public App getAppO() {
 	return (App) getMtlO();
     }
-
+    public Expr getExprO() {
+    	return (Expr) getMtlO();
+    }
     public Dose getDoseO() {
 	return (Dose) getMtlO();
     }

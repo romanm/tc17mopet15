@@ -6,11 +6,16 @@ import org.tasclin1.mopet.domain.Tree;
 
 public class Treex {
     Integer did, id, idclass, ref;
-
     @XmlAttribute
-    public Integer getRef() {
-	return ref;
-    }
+    public Integer getRef() {return ref; }
+    @XmlAttribute
+    public Long getSort() {return sort;}
+    @XmlAttribute
+    public Integer getDid() {return did;}
+    @XmlAttribute
+    public Integer getIdclass() {return idclass; }
+    @XmlAttribute
+    public Integer getId() {return id;}
 
     public void setRef(Integer ref) {
 	this.ref = ref;
@@ -25,11 +30,6 @@ public class Treex {
     }
 
     private Long sort;
-
-    @XmlAttribute
-    public Long getSort() {
-	return sort;
-    }
 
     /*
      * private Tree tree;
@@ -52,23 +52,8 @@ public class Treex {
     public Treex() {
     }
 
-    @XmlAttribute
-    public Integer getDid() {
-	return did;
-    }
-
     public void setDid(Integer id) {
 	did = id;
-    }
-
-    @XmlAttribute
-    public Integer getIdclass() {
-	return idclass;
-    }
-
-    @XmlAttribute
-    public Integer getId() {
-	return id;
     }
 
 }

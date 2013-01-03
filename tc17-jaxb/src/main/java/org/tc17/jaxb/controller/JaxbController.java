@@ -2,6 +2,8 @@ package org.tc17.jaxb.controller;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -23,11 +25,14 @@ import org.tc17.jaxb.core.Appx;
 import org.tc17.jaxb.core.Dayx;
 import org.tc17.jaxb.core.Dosex;
 import org.tc17.jaxb.core.Drugx;
+import org.tc17.jaxb.core.Exprx;
 import org.tc17.jaxb.core.FindingPatientx;
 import org.tc17.jaxb.core.Laborx;
+import org.tc17.jaxb.core.Noticex;
 import org.tc17.jaxb.core.OfDate;
 import org.tc17.jaxb.core.Patientx;
 import org.tc17.jaxb.core.Pvariablex;
+import org.tc17.jaxb.core.Rulex;
 import org.tc17.jaxb.core.TaskPatientx;
 import org.tc17.jaxb.core.TaskRegimex;
 import org.tc17.jaxb.core.Timesx;
@@ -127,8 +132,10 @@ public class JaxbController {
     		mtlX = regimeDrugx(t0);
     	} else if (t0.isPatient()) {
     		mtlX = regimePatientx(t0);
+    	} else if (t0.isExpr()) {
+    		mtlX = regimeExpr(t0);
     	} else if (t0.isDose()) {
-    		mtlX = new Dosex(t0);
+    		mtlX = regimeDrugDose(t0);
     	} else if (t0.isDay()) {
     		mtlX = regimeDrugDay(t0);
     	} else if (t0.isTimes()) {
@@ -174,17 +181,18 @@ public class JaxbController {
     }
 
     private TaskRegimex regimeTaskx(Tree taskT) {
-	TaskRegimex taskx = new TaskRegimex(taskT);
-	for (Tree t1 : taskT.getChildTs())
-	    if (t1.isDrug()) {
-		// taskx.getTaskOne().add(regimeDrugx(t1));
-		taskx.getDrug().add(regimeDrugx(t1));
-	    } else if (t1.isTask()) {
-		taskx.getTask().add(regimeTaskx(t1));
-	    } else if (t1.isLabor()) {
-		taskx.getLabor().add(regimeLaborx(t1));
-	    }
-	return taskx;
+    	TaskRegimex taskx = new TaskRegimex(taskT);
+    	for (Tree t1 : taskT.getChildTs())
+    		if (t1.isDrug()) {
+    			taskx.getDrug().add(regimeDrugx(t1));
+    		} else if (t1.isTask()) {
+    			taskx.getTask().add(regimeTaskx(t1));
+    		} else if (t1.isLabor()) {
+    			taskx.getLabor().add(regimeLaborx(t1));
+    		}else if(t1.isNotice()){
+    			taskx.getNotice().add(regimeNotice(t1));
+    		}
+    	return taskx;
     }
 
     private Laborx regimeLaborx(Tree laborT) {
@@ -195,29 +203,70 @@ public class JaxbController {
 	    }
 	return laborx;
     }
+    private Exprx regimeExpr(Tree exprT) {
+    	Exprx exprx = new Exprx(exprT);
+    	for (Tree t1 : exprT.getChildTs())
+    		if (t1.isExpr()) {
+    			exprx.getEexpr().add(regimeExpr(t1));
+    		}
+    	return exprx;
+    }
+    private Noticex regimeNotice(Tree exprT) {
+    	Noticex noticex = new Noticex(exprT);
+		return noticex;
+    }
+    private Dosex regimeDrugDose(Tree doseT) {
+		Dosex dosex = new Dosex(doseT);
+		for (Tree t1 : doseT.getChildTs())
+			if(t1.isExpr()){
+				dosex.getExpr().add(regimeExpr(t1));
+			}else if(t1.isNotice()){
+				dosex.getNotice().add(regimeNotice(t1));
+			}
+		return dosex;
+	}
+	
 
     private Drugx regimeDrugx(Tree drugT) {
-	Drugx drugx = new Drugx(drugT);
-	for (Tree t1 : drugT.getChildTs())
-	    if (t1.isDose()) {
-		drugx.setDose(new Dosex(t1));
-	    } else if (t1.isApp()) {
-		drugx.setApp(new Appx(t1));
-	    } else if (t1.isDay()) {
-		drugx.getDay().add(regimeDrugDay(t1));
-	    }
-	return drugx;
+    	Drugx drugx = new Drugx(drugT);
+    	for (Tree t1 : drugT.getChildTs())
+    		if (t1.isDose()) {
+    			drugx.setDose(regimeDrugDose(t1));
+    		}else if(t1.isExpr()){
+    			drugx.getExpr().add(regimeExpr(t1));
+			}else if(t1.isNotice()){
+				drugx.getNotice().add(regimeNotice(t1));
+    		} else if (t1.isApp()) {
+    			drugx.setApp(new Appx(t1));
+    		} else if (t1.isDrug()){ 
+    			drugx.getDdrug().add(regimeDrugDrug(t1));
+    		} else if (t1.isDay()) {
+    			drugx.getDay().add(regimeDrugDay(t1));
+    		}
+    	return drugx;
     }
-
-    private Dayx regimeDrugDay(Tree t1) {
-	Dayx dayx = new Dayx(t1);
-	for (Tree t2 : t1.getChildTs()) {
-	    if (t2.isTimes()) {
-		// dayx.setTimes(new Timesx(t2));
-		dayx.getTimes().add(new Timesx(t2));
-	    }
-	}
-	return dayx;
+	
+    private Drugx regimeDrugDrug(Tree drugDrugT) {
+    	Drugx drugx = new Drugx(drugDrugT);
+    	for (Tree t1 : drugDrugT.getChildTs())
+    	    if (t1.isDose()) {
+    		drugx.setDose(regimeDrugDose(t1));
+    	    }
+    	return drugx;
+    }
+    private Dayx regimeDrugDay(Tree dayT) {
+    	Dayx dayx = new Dayx(dayT);
+    	for (Tree t1 : dayT.getChildTs()) {
+    		if (t1.isTimes()) {
+    			// dayx.setTimes(new Timesx(t2));
+    			dayx.getTimes().add(new Timesx(t1));
+    		}else if(dayT.isExpr()){
+    			dayx.getExpr().add(regimeExpr(t1));
+    		}else if(t1.isNotice()){
+				dayx.getNotice().add(regimeNotice(t1));
+    		}
+    	}
+    	return dayx;
     }
     private void addOfDate(OfDate patientHistoryx, Tree t1) {
     	if (t1.isPvariable()) {

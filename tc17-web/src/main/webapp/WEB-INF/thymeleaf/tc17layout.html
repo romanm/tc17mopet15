@@ -74,15 +74,17 @@
 	</thead>
 	<tbody>
 		<div th:each="drugT : ${regimeT.childTs}"
-			th:if="${'drug'==drugT.tabName}"
+			th:if="${drugT.drug}"
 			th:include="thymeleaf/tc17layout :: taskDrugEdTRs " 
 			th:remove="tag">taskDrugEdTRs</div>
 		<div th:each="taskTaskT : ${regimeT.childTs}"
-			th:if="${'task'==taskTaskT.tabName}"
+			th:if="${taskTaskT.task}"
 			th:include="thymeleaf/tc17layout :: taskTaskDrugEdBlock"
 			th:remove="tag"/>
 	</tbody>
 </table>
+<p th:each="noticeT : ${regimeT.childTs}" th:if="${noticeT.notice}"
+	th:utext="${noticeT.noticeO.notice}"/>
 </div>
 
 <div th:fragment="taskTaskDrugEdBlock" >
@@ -99,8 +101,8 @@
 	drugDayTimesT=${drugT.getDrugDayTimesT(0)}">
 		<td th:text="${drugT.drugO.drug}" >: drug name :</td>
 		<td th:include="thymeleaf/cere-plan :: doseHtml">: dose :</td>
-		<td><span th:text="${doseT.doseO.app} " />
-			<span th:if="${drugT.drugAppT!=null}" th:with="appT=${drugT.drugAppT}"
+		<td><span  th:if="${drugT.dose}" th:text="${doseT.doseO.app} " />
+			<span th:if="${null!=drugT.drugAppT}" th:with="appT=${drugT.drugAppT}"
 			th:text="${appT.appO.appapp+' '+appT.appO.unit} " />
 		</td>
 		<td> <div th:include="thymeleaf/tc17layout :: dayHtml" th:remove="tag"> : day : </div> </td>
@@ -132,11 +134,17 @@
 		</td>
 		<td th:include="thymeleaf/tc17layout :: timesHtml ">: times :</td>
 	</tr>
+	<!-- 
+	<tr><td colspan="6" >
+		<span th:text="${drugNoticeExprM}"></span>
+		<span th:text="${drugNoticeExprM.get(drugT)}"></span>
+	</td></tr>
+	 -->
 	<div th:if="${null!=drugNoticeExprM.get(drugT)}" th:remove="tag">
 	<tr><td colspan="6">
 		<span th:each="neT:${drugNoticeExprM.get(drugT)}" th:remove="tag"
 		th:switch="${neT.tabName}" >
-			<span th:case="'notice'" th:text="${neT.mtlO.notice}"></span>
+			<span th:case="'notice'" th:utext="${neT.mtlO.notice}"></span>
 			<span th:case="'expr'" th:text="${neT.mtlO}"></span>
 		</span>
 	</td></tr>
@@ -144,7 +152,7 @@
 </div>
 
 <div th:fragment="dayHtml">
-	<span th:text="${drugDayT.dayO.abs}">day </span>
+	<span  th:if="${null!=drugDayT.dayO}" th:text="${drugDayT.dayO.abs}">day </span>
 	<span th:if="${null==drugDayT.dayO}">###</span>
 </div>
 

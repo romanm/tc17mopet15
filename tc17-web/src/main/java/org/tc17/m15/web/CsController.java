@@ -32,5 +32,4 @@ public class CsController extends BasisController{
     	mopetService.initRegimeDocT(model);
 		return "thymeleaf/regime";
 	}
-
 }

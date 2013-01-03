@@ -429,6 +429,7 @@ public class MopetService {
 		if (tree.isNotice() || tree.isExpr()) {
 			if (tree.getParentT().isDrug() 
 					|| tree.getParentT().isDose() || tree.getParentT().isDay()) {
+				log.debug(tree);
 				Map<Tree, List<Tree>> drugNoticeExprM = (Map<Tree, List<Tree>>) model.asMap().get(
 						MopetService.drugNoticeExprM);
 				Tree drugT = tree.getParentT();

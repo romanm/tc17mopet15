@@ -1,6 +1,7 @@
 package org.tc17.jaxb.core;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -38,7 +39,16 @@ public class TaskRegimex extends Taskx {
     public void setLabor(ArrayList<Laborx> labor) {
 	this.labor = labor;
     }
+    ArrayList<Noticex> notice;
+    public ArrayList<Noticex> getNotice() {
+		if (null == notice)
+			notice = new ArrayList<Noticex>();
+		return notice;
+	}
 
+	public void setNotice(ArrayList<Noticex> notice) {
+		this.notice = notice;
+	}
     /*
      * ArrayList<TaskOnex> taskOne; public ArrayList<TaskOnex> getTaskOne() { if (null == taskOne) taskOne = new
      * ArrayList<TaskOnex>(); return taskOne; }
