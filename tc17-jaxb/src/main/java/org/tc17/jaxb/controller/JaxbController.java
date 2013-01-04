@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.tasclin1.mopet.domain.Tree;
 import org.tasclin1.mopet.service.MopetService;
 import org.tc17.jaxb.core.Appx;
+import org.tc17.jaxb.core.Conceptx;
 import org.tc17.jaxb.core.Dayx;
+import org.tc17.jaxb.core.Definitionx;
 import org.tc17.jaxb.core.Dosex;
 import org.tc17.jaxb.core.Drugx;
 import org.tc17.jaxb.core.Exprx;
@@ -32,6 +34,7 @@ import org.tc17.jaxb.core.Patientx;
 import org.tc17.jaxb.core.Pvariablex;
 import org.tc17.jaxb.core.TaskPatientx;
 import org.tc17.jaxb.core.TaskRegimex;
+import org.tc17.jaxb.core.Taskx;
 import org.tc17.jaxb.core.Timesx;
 import org.tc17.jaxb.core.Treex;
 
@@ -82,11 +85,17 @@ public class JaxbController {
     	log.debug(htmlId);
     	String pasteId = htmlId;
     	log.debug("-------------" + pasteId);
-    	String pasteNodeId = pasteId.split("_")[1];
+    	String[] split = pasteId.split("_");
+    	String pasteNodeType = split[0];
+		String pasteNodeId = split[1];
     	int pasteNodeId2 = Integer.parseInt(pasteNodeId);
     	// String readJaxb = readJaxb(pasteId);
     	log.debug("-------------" + pasteNodeId2);
-    	Treex taskx = jaxbService.loadTaskx(pasteNodeId2);
+    	Class classType = TaskRegimex.class;
+    	if("c".equals(pasteNodeType))
+    		classType = Conceptx.class;
+    	Treex taskx = jaxbService.loadTaskx(pasteNodeId2,classType);
+    	log.debug("-------------" + taskx);
 //    	TaskRegimex taskx = jaxbService.loadTaskx(pasteNodeId2);
 //    	Drugx drugx = loadDrugx(pasteNodeId2);
 //    	Tree drugT = buildTree(drugx);
@@ -95,23 +104,6 @@ public class JaxbController {
     	return taskx;
     }
     
-    private Drugx loadDrugx(Integer pasteId) {
-    	Drugx drugx = null;
-    	JAXBContext newInstance;
-    	URL url;
-    	try {
-    		newInstance = JAXBContext.newInstance(Drugx.class);
-    		Unmarshaller createUnmarshaller = newInstance.createUnmarshaller();
-    		url = new URL("http://localhost:8080/tc17-web/xml=x_" + pasteId);
-    		drugx = (Drugx) createUnmarshaller.unmarshal(url);
-    		log.debug(drugx);
-    	} catch (MalformedURLException e) {
-    		e.printStackTrace();
-    	} catch (JAXBException e) {
-    		e.printStackTrace();
-    	}
-    	return drugx;
-    }
     @RequestMapping(value = "/xml={htmlId}", method = RequestMethod.GET,
     		produces = "application/xml")
     public @ResponseBody
@@ -137,9 +129,12 @@ public class JaxbController {
     		mtlX = regimeDrugDay(t0);
     	} else if (t0.isTimes()) {
     		mtlX = new Timesx(t0);
+    	} else if (t0.isConcept()) {
+    		mtlX = conceptStudyx(t0);
     	} else {
     		log.info("TODO! \n"+t0);
     	}
+    	log.debug(mtlX);
     	return mtlX;
     }
 
@@ -163,20 +158,35 @@ public class JaxbController {
     }
 
     private TaskPatientx taskPatientx(Tree taskT) {
-	TaskPatientx taskPatientx = new TaskPatientx(taskT);
-	for (Tree t1 : taskT.getChildTs()) {
-	    addOfDate(taskPatientx, t1);
-	    if (t1.isPvariable()) {
-		Pvariablex pvariablex = new Pvariablex(t1);
-		if ("cycle".equals(t1.getPvalueO().getPvariable())) {
-		    taskPatientx.setPvCycle(pvariablex);
-		}
-	    }
-	}
-	log.debug(taskPatientx);
-	return taskPatientx;
+    	TaskPatientx taskPatientx = new TaskPatientx(taskT);
+    	for (Tree t1 : taskT.getChildTs()) {
+    		addOfDate(taskPatientx, t1);
+    		if (t1.isPvariable()) {
+    			Pvariablex pvariablex = new Pvariablex(t1);
+    			if ("cycle".equals(t1.getPvalueO().getPvariable())) {
+    				taskPatientx.setPvCycle(pvariablex);
+    			}
+    		}
+    	}
+    	log.debug(taskPatientx);
+    	return taskPatientx;
     }
-
+    private Conceptx conceptStudyx(Tree conceptT) {
+    	Conceptx conceptx = new Conceptx(conceptT);
+    	for (Tree t1 : conceptT.getChildTs())
+    		if ("definition".equals(t1.getTabName()) ){
+    			Definitionx definitionx = new Definitionx(t1);
+    			conceptx.setDefinition(definitionx);
+    			for (Tree t2 : t1.getChildTs()) {
+    				if (t2.isTask()) {
+    					definitionx.getTask().add(new Taskx(t2));
+    				}
+    			}
+    		} else if (t1.isTask()) {
+    			conceptx.getTask().add(new Taskx(t1));
+    		}
+    	return conceptx;
+    }
     private TaskRegimex regimeTaskx(Tree taskT) {
     	TaskRegimex taskx = new TaskRegimex(taskT);
     	for (Tree t1 : taskT.getChildTs())
@@ -213,18 +223,15 @@ public class JaxbController {
 		return noticex;
     }
     private Dosex regimeDrugDose(Tree doseT) {
-    	log.debug(doseT);
 		Dosex dosex = new Dosex(doseT);
 		for (Tree t1 : doseT.getChildTs())
 			if(t1.isExpr()){
-				log.debug(t1);
 				dosex.getExpr().add(regimeExpr(t1));
 			}else if(t1.isNotice()){
 				dosex.getNotice().add(regimeNotice(t1));
 			}
 		return dosex;
 	}
-	
 
     private Drugx regimeDrugx(Tree drugT) {
     	Drugx drugx = new Drugx(drugT);

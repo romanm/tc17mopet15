@@ -226,7 +226,7 @@ public class Tree implements Serializable {
     public boolean isApp() {
 	return getMtlO() instanceof App || "app".equals(getTabName());
     }
-
+    
     public boolean isTimes() {
 	return isMtlTimesO() || "times".equals(getTabName());
     }
@@ -577,7 +577,9 @@ public class Tree implements Serializable {
     public Dose getDoseO() {
 	return (Dose) getMtlO();
     }
-
+    public Concept getConceptO() {
+    	return (Concept) getMtlO();
+    }
     public Day getDayO() {
 	return (Day) getMtlO();
     }

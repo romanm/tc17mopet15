@@ -18,6 +18,7 @@ import org.tasclin1.mopet.domain.Expr;
 import org.tasclin1.mopet.domain.Task;
 import org.tasclin1.mopet.domain.Times;
 import org.tasclin1.mopet.domain.Tree;
+import org.tc17.jaxb.core.Conceptx;
 import org.tc17.jaxb.core.Dayx;
 import org.tc17.jaxb.core.Dosex;
 import org.tc17.jaxb.core.Drugx;
@@ -144,18 +145,21 @@ public class JaxbService {
 		return tree;
 	}
 //	public TaskRegimex loadTaskx(Integer pasteId) {
-	public Treex loadTaskx(Integer pasteId) {
+	public Treex loadTaskx(Integer pasteId, Class classType) {
 		Treex taskX = null;
 //    	TaskRegimex taskX = null;
     	JAXBContext newInstance;
     	URL url;
     	try {
-    		newInstance = JAXBContext.newInstance(TaskRegimex.class);
+			newInstance = JAXBContext.newInstance(classType);
+//    		Class<Conceptx> class1 = Conceptx.class;
+//			newInstance = JAXBContext.newInstance(class1);
     		Unmarshaller createUnmarshaller = newInstance.createUnmarshaller();
     		String urlStr = "http://localhost:8080/tc17-web/xml=x_" + pasteId;
 			url = new URL(urlStr);
 			log.debug(url);
     		taskX = (Treex) createUnmarshaller.unmarshal(url);
+    		log.debug(taskX);
 //    		taskX = (TaskRegimex) createUnmarshaller.unmarshal(url);
     		log.debug(taskX);
     	} catch (MalformedURLException e) {

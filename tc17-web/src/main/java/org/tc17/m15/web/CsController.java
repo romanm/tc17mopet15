@@ -26,7 +26,8 @@ public class CsController extends BasisController{
     Integer idRegime, Model model) {
 		addRegimeView(regimeView, model);
 //    	TaskRegimex taskx = jaxbService.loadTaskx(idRegime);
-    	TaskRegimex taskx = (TaskRegimex) jaxbService.loadTaskx(idRegime);
+    	TaskRegimex taskx 
+    	= (TaskRegimex) jaxbService.loadTaskx(idRegime,TaskRegimex.class);
     	Tree regimeT = jaxbService.buildTree(taskx);
     	log.debug(regimeT);
     	model.addAttribute("regimeT", regimeT);
