@@ -2,8 +2,6 @@ package org.tc17.jaxb.controller;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -32,7 +30,6 @@ import org.tc17.jaxb.core.Noticex;
 import org.tc17.jaxb.core.OfDate;
 import org.tc17.jaxb.core.Patientx;
 import org.tc17.jaxb.core.Pvariablex;
-import org.tc17.jaxb.core.Rulex;
 import org.tc17.jaxb.core.TaskPatientx;
 import org.tc17.jaxb.core.TaskRegimex;
 import org.tc17.jaxb.core.Timesx;
@@ -89,12 +86,12 @@ public class JaxbController {
     	int pasteNodeId2 = Integer.parseInt(pasteNodeId);
     	// String readJaxb = readJaxb(pasteId);
     	log.debug("-------------" + pasteNodeId2);
-    	TaskRegimex taskx = jaxbService.loadTaskx(pasteNodeId2);
+    	Treex taskx = jaxbService.loadTaskx(pasteNodeId2);
+//    	TaskRegimex taskx = jaxbService.loadTaskx(pasteNodeId2);
 //    	Drugx drugx = loadDrugx(pasteNodeId2);
 //    	Tree drugT = buildTree(drugx);
 //    	log.debug("-------------" + drugT);
-    	Tree buildTree = jaxbService.buildTree(taskx);
-    	log.debug(buildTree);
+//    	Tree buildTree = jaxbService.buildTree(taskx);
     	return taskx;
     }
     
@@ -120,11 +117,11 @@ public class JaxbController {
     public @ResponseBody
     Treex xml(@PathVariable
     		String htmlId, Model model) {
-    	log.debug(123);
-    	log.debug(1);
     	Integer id = mopetService.getIdFromHtmlId(htmlId);
     	log.debug(id);
     	Tree t0 = mopetService.readNodes4(id, model);
+    	log.debug(t0);
+
     	Treex mtlX = null;
     	if (t0.isTask()) {
     		mtlX = regimeTaskx(t0);
@@ -216,9 +213,11 @@ public class JaxbController {
 		return noticex;
     }
     private Dosex regimeDrugDose(Tree doseT) {
+    	log.debug(doseT);
 		Dosex dosex = new Dosex(doseT);
 		for (Tree t1 : doseT.getChildTs())
 			if(t1.isExpr()){
+				log.debug(t1);
 				dosex.getExpr().add(regimeExpr(t1));
 			}else if(t1.isNotice()){
 				dosex.getNotice().add(regimeNotice(t1));
@@ -260,7 +259,7 @@ public class JaxbController {
     		if (t1.isTimes()) {
     			// dayx.setTimes(new Timesx(t2));
     			dayx.getTimes().add(new Timesx(t1));
-    		}else if(dayT.isExpr()){
+    		}else if(t1.isExpr()){
     			dayx.getExpr().add(regimeExpr(t1));
     		}else if(t1.isNotice()){
 				dayx.getNotice().add(regimeNotice(t1));

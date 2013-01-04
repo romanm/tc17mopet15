@@ -57,9 +57,5 @@ public class Dosex extends Treex {
 		if (null == expr) expr = new ArrayList<Exprx>();
 		return expr;
 	}
-	ArrayList<Rulex> rule;
-	public List<Tree> getRule() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 }

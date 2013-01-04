@@ -143,22 +143,20 @@ public class JaxbService {
 		tree.setTabName(tabName);
 		return tree;
 	}
-	public TaskRegimex loadTaskx(Integer pasteId) {
-    	TaskRegimex taskX = null;
+//	public TaskRegimex loadTaskx(Integer pasteId) {
+	public Treex loadTaskx(Integer pasteId) {
+		Treex taskX = null;
+//    	TaskRegimex taskX = null;
     	JAXBContext newInstance;
     	URL url;
-    	log.debug(1);
     	try {
-    		log.debug(2);
     		newInstance = JAXBContext.newInstance(TaskRegimex.class);
-    		log.debug(3);
     		Unmarshaller createUnmarshaller = newInstance.createUnmarshaller();
-    		log.debug(4);
     		String urlStr = "http://localhost:8080/tc17-web/xml=x_" + pasteId;
-    		log.debug(urlStr);
 			url = new URL(urlStr);
 			log.debug(url);
-    		taskX = (TaskRegimex) createUnmarshaller.unmarshal(url);
+    		taskX = (Treex) createUnmarshaller.unmarshal(url);
+//    		taskX = (TaskRegimex) createUnmarshaller.unmarshal(url);
     		log.debug(taskX);
     	} catch (MalformedURLException e) {
     		e.printStackTrace();
