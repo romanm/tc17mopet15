@@ -11,6 +11,7 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
+import org.tasclin1.mopet.domain.Concept;
 import org.tasclin1.mopet.domain.Day;
 import org.tasclin1.mopet.domain.Dose;
 import org.tasclin1.mopet.domain.Drug;
@@ -20,6 +21,7 @@ import org.tasclin1.mopet.domain.Times;
 import org.tasclin1.mopet.domain.Tree;
 import org.tc17.jaxb.core.Conceptx;
 import org.tc17.jaxb.core.Dayx;
+import org.tc17.jaxb.core.Definitionx;
 import org.tc17.jaxb.core.Dosex;
 import org.tc17.jaxb.core.Drugx;
 import org.tc17.jaxb.core.Exprx;
@@ -31,6 +33,26 @@ import org.tc17.jaxb.core.Treex;
 @Service("jaxbService")
 public class JaxbService {
 	protected final Log log = LogFactory.getLog(getClass());
+	public Tree buildTree(Conceptx conceptX) {
+		Tree conceptT = buildTree(conceptX, "task");
+		conceptT.setMtlO(new Concept());
+		conceptT.getConceptO().setProtocol(conceptX.getProtocol());
+		conceptT.getConceptO().setProtocoltype(conceptX.getProtocoltype());
+		Definitionx definitionX = conceptX.getDefinition();
+		Tree definitionT = buildTree(definitionX, "definition");
+		buildTree(conceptT, definitionT);
+		if(definitionX.getTask().size()>0)
+    		for (Taskx task : definitionX.getTask()) {
+    			Tree buildTree = buildTaskEl(task);
+    			buildTree(definitionT, buildTree);
+    		}
+		if(conceptX.getTask().size()>0)
+    		for (Taskx task : conceptX.getTask()) {
+    			Tree buildTree = buildTaskEl(task);
+    			buildTree(conceptT, buildTree);
+    		}
+		return conceptT;
+	}
 	public Tree buildTree(TaskRegimex taskX) {
 		Tree taskT = buildTree(taskX, "task");
     	taskT.setMtlO(new Task());
@@ -50,16 +72,20 @@ public class JaxbService {
     	return taskT;
     }
 	private Tree buildTree(Taskx taskX) {
-    	Tree taskT = buildTree(taskX, "task");
-    	taskT.setMtlO(new Task());
-    	taskT.getTaskO().setTask(taskX.getTaskName());
-    	taskT.getTaskO().setTaskvar(taskX.getTaskvar());
-    	taskT.getTaskO().setType(taskX.getType());
+    	Tree taskT = buildTaskEl(taskX);
     	if(taskX.getDrug().size()>0)
     		for (Drugx drugX : taskX.getDrug()) {
     			Tree buildTree = buildTree(drugX);
     			buildTree(taskT, buildTree);
     		}
+		return taskT;
+	}
+	private Tree buildTaskEl(Taskx taskX) {
+		Tree taskT = buildTree(taskX, "task");
+    	taskT.setMtlO(new Task());
+    	taskT.getTaskO().setTask(taskX.getTaskName());
+    	taskT.getTaskO().setTaskvar(taskX.getTaskvar());
+    	taskT.getTaskO().setType(taskX.getType());
 		return taskT;
 	}
 	public Tree buildTree(Drugx drugX) {
@@ -169,4 +195,5 @@ public class JaxbService {
     	}
     	return taskX;
     }
+	
 }
