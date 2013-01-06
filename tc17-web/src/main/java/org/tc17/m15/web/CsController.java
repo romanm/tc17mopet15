@@ -1,7 +1,5 @@
 package org.tc17.m15.web;
 
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,7 @@ import org.tasclin1.mopet.domain.Tree;
 import org.tasclin1.mopet.service.MopetService;
 import org.tc17.jaxb.controller.JaxbService;
 import org.tc17.jaxb.core.Conceptx;
+import org.tc17.jaxb.core.Folderx;
 import org.tc17.jaxb.core.TaskRegimex;
 
 @Controller
@@ -57,4 +56,17 @@ public class CsController extends BasisController{
 			}
 		return "thymeleaf/study";
 	}
+	// Concept END
+
+	// Folder
+	@RequestMapping(value = "/cs/tfolder={idFolder}", method = RequestMethod.GET)
+	public String folder(@PathVariable
+			Integer idFolder, Model model) {
+		log.debug(1);
+		Folderx folderx 
+		= (Folderx) jaxbService.loadTaskx(idFolder,Folderx.class);
+		Tree conceptT = jaxbService.buildTree(folderx,model);
+		return "thymeleaf/folder";
+	}
+	// Folder END
 }

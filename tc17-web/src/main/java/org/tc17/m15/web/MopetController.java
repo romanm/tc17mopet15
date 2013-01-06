@@ -89,12 +89,7 @@ public class MopetController extends BasisController{
 	@RequestMapping(value = "/folder={idFolder}", method = RequestMethod.GET)
 	public void folder(@PathVariable
 			Integer idFolder, Model model) {
-		//		model.addAttribute("idFolder", idFolder);
-		log.debug(1);
-		log.debug(mopetService);
-		log.debug(2);
 		mopetService.readFolderO2folder(idFolder, model);
-		//		model.addAttribute("docId", idFolder);
 	}
 	// Folder END
 

@@ -98,9 +98,8 @@ public class MopetService {
 		return readTreeWithMtlO(id, model);
 	}
 	private void addConceptRegime(Tree conceptT, Model model) {
-		log.debug(1);
 		if (!model.asMap().containsKey("conceptRegime"))
-			model.addAttribute("conceptRegime", new HashMap<Tree, List<Tree>>());
+			model.addAttribute("conceptRegime", new HashMap<Integer, List<Tree>>());
 		for (Tree defT : conceptT.getChildTs())
 			if ("definition".equals(defT.getTabName())) {
 				ArrayList<Tree> arrayList = new ArrayList<Tree>();
@@ -109,7 +108,8 @@ public class MopetService {
 						setMtlO(regimeT, model);
 						arrayList.add(regimeT);
 					}
-				((Map<Tree, List<Tree>>) model.asMap().get("conceptRegime")).put(conceptT, arrayList);
+				((Map<Integer, List<Tree>>) model.asMap().get("conceptRegime"))
+				.put(conceptT.getId(), arrayList);
 				break;
 			}
 	}
@@ -118,10 +118,8 @@ public class MopetService {
 		Folder folderO = readFolderO2doc(idFolder, model);
 		Tree folderT = setTreeWithMtlO(idFolder, model);
 		model.addAttribute("folderT", folderT);
-		log.debug(1);
 		for (Tree tree : folderT.getChildTs()) {
 			setMtlO(tree, model);
-			log.debug(2);
 			if (tree.isConcept())
 				addConceptRegime(tree, model);
 		}
@@ -222,10 +220,7 @@ public class MopetService {
 
 	}
 	private Tree readTreeWithMtlO(Integer id, Model model) {
-		log.debug(id);
 		Tree tree = em.find(Tree.class, id);
-		System.out.println(tree);
-		log.debug(tree);
 		setMtlO(tree, model);
 		return tree;
 	}
@@ -235,16 +230,11 @@ public class MopetService {
 		model.addAttribute("folderT", folderT);
 		return folderT.getFolderO();
 	}
+
 	private EntityManager em;
-
-	public EntityManager getEm() {
-		return em;
-	}
-
+	public EntityManager getEm() {return em;}
 	@PersistenceContext
-	public void setEntityManager(EntityManager em) {
-		this.em = em;
-	}
+	public void setEntityManager(EntityManager em) {this.em = em;}
 	@Transactional(readOnly = true)
 	public Tree readConceptT(Integer idStudy, Model model) {
 		Tree conceptT = setTreeWithMtlO(idStudy, model);

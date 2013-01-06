@@ -7,8 +7,8 @@
 	<div id="headline" th:include="thymeleaf/tc17layout :: headline">rg:headline</div>
 <div id="content">
 	<h1 class="newstitle">
-		<img th:src="@{/resources/images/Open16.gif}" /> <span
-			th:text="${folderT.mtlO.folder }" />
+		<img th:src="@{/resources/images/Open16.gif}" /> 
+		<span th:text="${folderT.mtlO.folder }" />
 	</h1>
 	<div>Subfolders: <span th:each="subFolderT:${folderT.childTs }"
 			th:if="${subFolderT.folder}"> <img
@@ -24,7 +24,7 @@
 				<a th:text="${docT.mtlO.protocol}"
 					th:href="@{'/study-sg'+'='+${docT.id}}" />
 			</div>
-			<span th:each="regimeT:${conceptRegime.get(docT)}">
+			<span th:each="regimeT:${conceptRegime.get(docT.id)}">
 				<span th:text="${regimeTStat.count>1?', ':''}">, </span>
 				<span class="regimeContent">
 				<a th:text="${regimeT.taskO.task}"
@@ -34,6 +34,19 @@
 		</div>
 	</p>
 </div>
-	<div id="sidebar">sidebar</div>
+<div id="sidebar">sidebar
+	<h3 class="newstitle">
+		<img th:src="@{/resources/images/Open16.gif}" /> 
+		<span th:text="${folderT.mtlO.folder }" />
+	</h3>
+	<div id="view_2" title="forDeveloper" class="titlePane" isopen="true">
+		<ul>
+			<li><a th:href="@{'/xml=f_'+${folderT.id}}">xml_jaxb</a></li>
+			<li><a th:href="@{'/xxml=f_'+${folderT.id}}">xxml_jaxb</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<script type="text/javascript">titlePaneAll()</script>
 </body>
 </html>

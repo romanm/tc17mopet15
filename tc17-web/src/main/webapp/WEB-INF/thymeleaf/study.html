@@ -34,7 +34,8 @@
 
 <div id="sidebar">
 sidebar
-<div id="view_2" title="forDeveloper" class="titlePane" isopen="true">
+	<h3 class="conceptContent newstitle" th:text="${conceptT.mtlO.protocol}"/>
+	<div id="view_2" title="forDeveloper" class="titlePane" isopen="true">
 		<ul>
 			<li><a th:href="@{'/xml=c_'+${conceptT.id}}">xml_jaxb</a></li>
 			<li><a th:href="@{'/xxml=c_'+${conceptT.id}}">xxml_jaxb</a>

@@ -19,9 +19,17 @@ public class Conceptx  extends Treex {
 		return definition;
 	}
 
-    ArrayList<Taskx> task;
+    ArrayList<Taskx> task,conceptRegime;
 
-    public ArrayList<Taskx> getTask() {
+    public ArrayList<Taskx> getConceptRegime() {
+    	if (null == conceptRegime)
+    		conceptRegime = new ArrayList<Taskx>();
+		return conceptRegime;
+	}
+	public void setConceptRegime(ArrayList<Taskx> conceptRegime) {
+		this.conceptRegime = conceptRegime;
+	}
+	public ArrayList<Taskx> getTask() {
 	if (null == task)
 	    task = new ArrayList<Taskx>();
 	return task;

@@ -1,11 +1,7 @@
 package org.tc17.jaxb.controller;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,6 +23,7 @@ import org.tc17.jaxb.core.Dosex;
 import org.tc17.jaxb.core.Drugx;
 import org.tc17.jaxb.core.Exprx;
 import org.tc17.jaxb.core.FindingPatientx;
+import org.tc17.jaxb.core.Folderx;
 import org.tc17.jaxb.core.Laborx;
 import org.tc17.jaxb.core.Noticex;
 import org.tc17.jaxb.core.OfDate;
@@ -57,23 +54,12 @@ public class JaxbController {
     @RequestMapping(value = "/jaxb_drug", method = RequestMethod.POST)
     public @ResponseBody
     String readXml(@RequestBody
-    Drugx drugXml) {
-	log.debug(1);
-	System.out.println("-------------------");
-	System.out.println(drugXml);
-	System.out.println(drugXml.getId());
-	// System.out.println(drugXml.getDrug());
-	// ArrayList<Dayx> day = drugXml.getDay();
-	// for (Dayx dayx : day) {
-	// System.out.println(dayx);
-	// System.out.println(dayx.getAbs());
-	// }
-	// Dosex dose = drugXml.getDose();
-	// System.out.println(dose);
-	// System.out.println(dose.getId());
-	// System.out.println(dose.getValue());
-	// System.out.println(dose.getApp());
-	return "Read from XML: " + drugXml;
+    		Drugx drugXml) {
+    	log.debug(1);
+    	System.out.println("-------------------");
+    	System.out.println(drugXml);
+    	System.out.println(drugXml.getId());
+    	return "Read from XML: " + drugXml;
     }
 
     @RequestMapping(value = "/xxml={htmlId}", method = RequestMethod.GET,
@@ -91,17 +77,14 @@ public class JaxbController {
     	int pasteNodeId2 = Integer.parseInt(pasteNodeId);
     	// String readJaxb = readJaxb(pasteId);
     	log.debug("-------------" + pasteNodeId2);
-    	Class classType = TaskRegimex.class;
+    	Class<?> classType = TaskRegimex.class;
     	if("c".equals(pasteNodeType))
     		classType = Conceptx.class;
-    	Treex taskx = jaxbService.loadTaskx(pasteNodeId2,classType);
-    	log.debug("-------------" + taskx);
-//    	TaskRegimex taskx = jaxbService.loadTaskx(pasteNodeId2);
-//    	Drugx drugx = loadDrugx(pasteNodeId2);
-//    	Tree drugT = buildTree(drugx);
-//    	log.debug("-------------" + drugT);
-//    	Tree buildTree = jaxbService.buildTree(taskx);
-    	return taskx;
+    	else if("f".equals(pasteNodeType))
+    		classType = Folderx.class;
+    	Treex treex = jaxbService.loadTaskx(pasteNodeId2,classType);
+    	log.debug("-------------" + treex);
+    	return treex;
     }
     
     @RequestMapping(value = "/xml={htmlId}", method = RequestMethod.GET,
@@ -111,51 +94,90 @@ public class JaxbController {
     		String htmlId, Model model) {
     	Integer id = mopetService.getIdFromHtmlId(htmlId);
     	log.debug(id);
-    	Tree t0 = mopetService.readNodes4(id, model);
-    	log.debug(t0);
-
+    	Tree tree = mopetService.checkId(id);
+    	log.debug(tree);
     	Treex mtlX = null;
-    	if (t0.isTask()) {
-    		mtlX = regimeTaskx(t0);
-    	} else if (t0.isDrug()) {
-    		mtlX = regimeDrugx(t0);
-    	} else if (t0.isPatient()) {
-    		mtlX = regimePatientx(t0);
-    	} else if (t0.isExpr()) {
-    		mtlX = regimeExpr(t0);
-    	} else if (t0.isDose()) {
-    		mtlX = regimeDrugDose(t0);
-    	} else if (t0.isDay()) {
-    		mtlX = regimeDrugDay(t0);
-    	} else if (t0.isTimes()) {
-    		mtlX = new Timesx(t0);
-    	} else if (t0.isConcept()) {
-    		mtlX = conceptStudyx(t0);
-    	} else {
-    		log.info("TODO! \n"+t0);
+    	if(tree.isFolder()){
+    		mopetService.readFolderO2folder(id, model);
+    		mtlX=folderX(model);
+    	}else{
+    		Tree t0 = mopetService.readNodes4(id, model);
+    		log.debug(t0);
+    		if (t0.isTask()) {
+    			mtlX = regimeTaskx(t0);
+    		} else if (t0.isDrug()) {
+    			mtlX = regimeDrugx(t0);
+    		} else if (t0.isPatient()) {
+    			mtlX = regimePatientx(t0);
+    		} else if (t0.isExpr()) {
+    			mtlX = regimeExpr(t0);
+    		} else if (t0.isDose()) {
+    			mtlX = regimeDrugDose(t0);
+    		} else if (t0.isDay()) {
+    			mtlX = regimeDrugDay(t0);
+    		} else if (t0.isTimes()) {
+    			mtlX = new Timesx(t0);
+    		} else if (t0.isConcept()) {
+    			mtlX = conceptStudyx(t0);
+    		} else {
+    			log.info("TODO! \n"+t0);
+    		}
     	}
     	log.debug(mtlX);
     	return mtlX;
     }
 
-    private Patientx regimePatientx(Tree taskT) {
-	Patientx patientx = new Patientx(taskT);
-	for (Tree t1 : taskT.getChildTs())
-	    if (t1.isTask()) {
-		patientx.getTask().add(taskPatientx(t1));
-	    } else if (t1.isFinding()) {
-		patientx.getFinding().add(findingPatientx(t1));
-	    }
-	return patientx;
+    private Folderx folderX(Model model) {
+    	Tree folderT = (Tree) model.asMap().get("folderT");
+    	Folderx folderX = new Folderx(folderT);
+    	for (Tree subFolderT : folderT.getChildTs()) 
+    		if(subFolderT.isFolder())
+    			folderX.getSubfolder().add(new Folderx(subFolderT));
+    	setParentfolder(folderT.getParentT(),folderX);
+    	for (Tree conceptT : folderT.getChildTs()) 
+    		if(conceptT.isConcept())
+    			folderX.getConcept().add(folderX(conceptT,model));
+    	return folderX;
     }
 
-    private FindingPatientx findingPatientx(Tree t0) {
-	FindingPatientx findingPatientx = new FindingPatientx(t0);
-	for (Tree t1 : t0.getChildTs()) {
-	    addOfDate(findingPatientx, t1);
+	private Conceptx folderX(Tree conceptT, Model model) {
+		Conceptx conceptx = new Conceptx(conceptT);
+		Map<Integer, List<Tree>> conceptRegime = 
+		(Map<Integer, List<Tree>>) model.asMap().get("conceptRegime");
+		if(conceptRegime.containsKey(conceptx.getId()))
+		for (Tree cRegimeT : conceptRegime.get(conceptx.getId())) {
+			conceptx.getConceptRegime().add(new TaskRegimex(cRegimeT));
+		}
+		return conceptx;
 	}
-	return findingPatientx;
-    }
+
+	private void setParentfolder(Tree parentT, Folderx folderX) {
+		if(null!=parentT.getFolderO()
+		&&!"folder".equals(parentT.getFolderO().getFolder())
+		){
+			folderX.getParentfolder().add(new Folderx(parentT));
+			setParentfolder(parentT.getParentT(),folderX);
+		}
+	}
+
+	private Patientx regimePatientx(Tree taskT) {
+		Patientx patientx = new Patientx(taskT);
+		for (Tree t1 : taskT.getChildTs())
+			if (t1.isTask()) {
+				patientx.getTask().add(taskPatientx(t1));
+			} else if (t1.isFinding()) {
+				patientx.getFinding().add(findingPatientx(t1));
+			}
+		return patientx;
+	}
+
+	private FindingPatientx findingPatientx(Tree t0) {
+		FindingPatientx findingPatientx = new FindingPatientx(t0);
+		for (Tree t1 : t0.getChildTs()) {
+			addOfDate(findingPatientx, t1);
+		}
+		return findingPatientx;
+	}
 
     private TaskPatientx taskPatientx(Tree taskT) {
     	TaskPatientx taskPatientx = new TaskPatientx(taskT);
