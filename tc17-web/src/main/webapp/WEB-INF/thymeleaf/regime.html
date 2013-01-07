@@ -3,7 +3,12 @@
 	<head th:include="thymeleaf/tc17layout :: headerFragment">
 </head>
 
-<body class="tundra spring">
+<body class="tundra spring"
+	th:with="
+	cs=${T(org.springframework.web.context.request.RequestContextHolder)
+	.currentRequestAttributes().request.requestURI.contains('/cs/')?'/cs':''}
+	"
+>
 	<div id="headline"
 	th:include="thymeleaf/tc17layout :: headline"
 	>rg:headline</div>
@@ -32,10 +37,10 @@
 		
 	<div id="view_1" title="View" class="titlePane" isopen="true">
 		<ul>
-			<li> <a th:href="@{'/cere-ed='+${regimeT.id}}"
+			<li> <a th:href="@{${cs}+'/cere-ed='+${regimeT.id}}"
 				th:text="#{uiTherapySchema}"
 			>ed</a> </li>
-			<li> <a th:href="@{'/cere-plan='+${regimeT.id}}"
+			<li> <a th:href="@{${cs}+'/cere-plan='+${regimeT.id}}"
 				th:text="#{uiChemoTherapyPlan}"
 			>plan</a> 
 				<ul th:if="${'plan'==regimeView}">
@@ -43,7 +48,7 @@
 					<li th:text="#{uiChemoTherapyPlan_drugNoteCheck}" />
 				</ul>
 			</li>
-			<li> <a th:href="@{'/cere-week='+${regimeT.id}}"
+			<li> <a th:href="@{${cs}+'/cere-week='+${regimeT.id}}"
 				th:text="#{uiChemoTherapyWeek}"
 			>week</a> </li>
 		</ul>

@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="thymeleaf/tc17layout :: headerFragment">
+	<head th:include="thymeleaf/tc17layout :: headerFragment">
 </head>
-
-<body class="tundra spring">
+<body class="tundra spring"
+	th:with="
+	cs=${T(org.springframework.web.context.request.RequestContextHolder)
+	.currentRequestAttributes().request.requestURI.contains('/cs/')?'/cs':''}
+	"
+>
 	<div id="headline" th:include="thymeleaf/tc17layout :: headline">rg:headline</div>
 <div id="content">
 	<h1 class="newstitle">
@@ -14,7 +18,7 @@
 			th:if="${subFolderT.folder}"> <img
 			th:src="@{/resources/images/Open16.gif}" /> <a
 			th:text="${subFolderT.mtlO.folder}"
-			th:href="@{'/tfolder='+${subFolderT.id}}" />
+			th:href="@{${cs}+'/tfolder='+${subFolderT.id}}" />
 		</span>
 		<div class="newstitle" />
 	</div>
@@ -22,13 +26,13 @@
 		<div th:if="${docT.concept}" th:remove="tag">
 			<div class="conceptContent">
 				<a th:text="${docT.mtlO.protocol}"
-					th:href="@{'/study-sg'+'='+${docT.id}}" />
+					th:href="@{${cs}+'/study-sg'+'='+${docT.id}}" />
 			</div>
 			<span th:each="regimeT:${conceptRegime.get(docT.id)}">
 				<span th:text="${regimeTStat.count>1?', ':''}">, </span>
 				<span class="regimeContent">
 				<a th:text="${regimeT.taskO.task}"
-					th:href="@{'/cere-ed'+'='+${regimeT.id}}" />
+					th:href="@{${cs}+'/cere-ed'+'='+${regimeT.id}}" />
 				</span>
 			</span>
 		</div>

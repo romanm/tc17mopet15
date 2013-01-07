@@ -369,7 +369,7 @@ public class Tree implements Serializable {
     private List<Tree> docTs;
 
     public List<Tree> getDocNodes() {
-	return this.docTs;
+    	return this.docTs;
     }
 
     public void setDocNodes(List<Tree> trees) {

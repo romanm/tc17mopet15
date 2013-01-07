@@ -3,7 +3,12 @@
   <head th:include="thymeleaf/tc17layout :: headerFragment">
 </head>
 
-<body class="tundra spring">
+<body class="tundra spring"
+	th:with="
+	cs=${T(org.springframework.web.context.request.RequestContextHolder)
+	.currentRequestAttributes().request.requestURI.contains('/cs/')?'/cs':''}
+	"
+>
 <div id="headline"
 	th:include="thymeleaf/tc17layout :: headline"
 	>rg:headline</div>
@@ -18,7 +23,7 @@
 			class="task select regimeContent"
 		>
 		<a th:text="${regimeT.taskO.task}"
-			th:href="@{'/cere-'+${regimeView}+'='+${regimeT.id}}"/>
+			th:href="@{${cs}+'/cere-'+${regimeView}+'='+${regimeT.id}}"/>
 		</div>
 	</div>
 </div>

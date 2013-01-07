@@ -42,7 +42,8 @@ public class BasisController {
 		getRequest().getSession().setAttribute(MopetService.regimeView, regimeView);
 	}
 	public static HttpServletRequest getRequest() {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+		HttpServletRequest request 
+		= ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
 				.getRequest();
 		return request;
 	}

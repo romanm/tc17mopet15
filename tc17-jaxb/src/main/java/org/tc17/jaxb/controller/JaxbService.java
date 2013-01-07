@@ -13,6 +13,7 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.tasclin1.mopet.domain.Concept;
@@ -24,6 +25,7 @@ import org.tasclin1.mopet.domain.Folder;
 import org.tasclin1.mopet.domain.Task;
 import org.tasclin1.mopet.domain.Times;
 import org.tasclin1.mopet.domain.Tree;
+import org.tasclin1.mopet.service.MopetService;
 import org.tc17.jaxb.core.Conceptx;
 import org.tc17.jaxb.core.Dayx;
 import org.tc17.jaxb.core.Definitionx;
@@ -138,6 +140,7 @@ public class JaxbService {
     	taskT.getTaskO().setTask(taskX.getTaskName());
     	taskT.getTaskO().setTaskvar(taskX.getTaskvar());
     	taskT.getTaskO().setType(taskX.getType());
+    	taskT.getTaskO().setId(taskX.getIdclass());
 		return taskT;
 	}
 	public Tree buildTree(Drugx drugX) {
@@ -230,7 +233,8 @@ public class JaxbService {
     	try {
 			newInstance = JAXBContext.newInstance(classType);
     		Unmarshaller createUnmarshaller = newInstance.createUnmarshaller();
-    		String urlStr = "http://localhost:8080/tc17-web/xml=x_" + pasteId;
+//    		String centralServerUrl = "http://localhost:8080/tc17-web/xml=x_";
+			String urlStr = centralServerUrl + pasteId;
 			url = new URL(urlStr);
 			log.debug(url);
     		taskX = (Treex) createUnmarshaller.unmarshal(url);
@@ -242,4 +246,6 @@ public class JaxbService {
     	}
     	return taskX;
     }
+	@Autowired
+    private String centralServerUrl;
 }

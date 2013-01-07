@@ -164,5 +164,4 @@ public class MopetController extends BasisController{
 		}
 		return "redirect:/";
 	}
-	
 }

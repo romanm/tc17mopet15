@@ -18,7 +18,8 @@
 >
 	<div th:case="'task'" class="task select regimeContent">
 		<a th:text="${wfBlockT.taskO.task}"
-			th:href="@{'/cere-'+${regimeView}+'='+${wfBlockT.taskO.id}}"/>
+			th:href="@{${cs}+'/cere-'+${regimeView}+'='+${wfBlockT.taskO.id}}"/>
+			<span th:text="${wfBlockT}"/>
 	</div>
 	<fieldset th:case="'choice'">
 		<legend class="choice select" th:id="${'c_'+wfBlockT.id}"
@@ -46,17 +47,17 @@
 	</span>
 	<span th:if="${null!=folderT}">
 	&gt; <a th:text="${folderT.mtlO.folder}"
-		th:href="@{'/folder'+'='+${folderT.id}}"/>
+		th:href="@{${cs}+'/tfolder'+'='+${folderT.id}}"/>
 	</span>
 	<span th:if="${null!=conceptT}">
 	&gt; <a class="conceptContent " 
 		th:text="${conceptT.mtlO.protocol}"
-		th:href="@{'/study-sg'+'='+${conceptT.id}}"/>
+		th:href="@{${cs}+'/study-sg'+'='+${conceptT.id}}"/>
 	</span>
 	<span th:if="${null!=regimeT}">
 	&gt; <a class="regimeContent " 
 		th:text="${regimeT.taskO.task}"
-		th:href="@{'/cere-'+${regimeView}+'='+${regimeT.id}}"/>
+		th:href="@{${cs}+'/cere-'+${regimeView}+'='+${regimeT.id}}"/>
 	</span>
 </div>
 
