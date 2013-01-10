@@ -22,8 +22,19 @@
 			</div>
 		</div>
 		<hr />
+		<div>
+	central server
+		<div>
+			<a th:href="@{'/cs/tfolder='+${protocolF.id}}">Study folder </a>
+		</div>
+	</div>
 		<div>lastUsedDocuments rg:lastUsedDocuments</div>
 	</div>
-	<div id="sidebar">sidebar</div>
+	<div id="sidebar">sidebar
+		<p/>
+		<span th:text="#{ui_ddd}" />
+		<a th:href="@{/}">JSP</a>
+		<a th:href="@{/thome}">Thymeleaf</a>
+	</div>
 </body>
 </html>

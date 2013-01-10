@@ -74,7 +74,7 @@
     </bean>
     <!-- MY -->
     <bean id="centralServerUrl" class="java.lang.String">
-		<constructor-arg value="http://localhost:8080/tc17-web/xml=x_"/>
+		<constructor-arg value="http://h2102322.stratoserver.net:8080/tc17-web/xml=x_"/>
 		<!-- 
 		<constructor-arg value="http://localhost:8080/tc17-web/xml=x_"/>
 		 -->

@@ -18,7 +18,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=8" />
 	<jsp:directive.page import="javax.servlet.http.Cookie" />
-		<c:set var="locale" value="en" scope="request" />
+	<c:set var="locale" value="en" scope="request" />
 	<jsp:scriptlet>pageContext.setAttribute("cl", request.getCookies());</jsp:scriptlet>
 	<c:forEach var="c" items="${cl }">
 		<c:if test="${'locale'==c.name }">

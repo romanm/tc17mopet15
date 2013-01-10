@@ -2,6 +2,7 @@ package org.tc17.m15.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.jackrabbit.core.RepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +16,7 @@ import org.tasclin1.mopet.service.MopetService;
 public class ThymeleafController extends BasisController{
 	protected final Log log = LogFactory.getLog(getClass());
 	private MopetService mopetService;
-
+	@Autowired RepositoryImpl repository;
 	@Autowired
 	public ThymeleafController(MopetService mopetService) {
 		this.mopetService = mopetService;
@@ -23,6 +24,7 @@ public class ThymeleafController extends BasisController{
 	}
 	@RequestMapping(value = "/thome", method = RequestMethod.GET)
 	public String home(Model model) {
+		log.debug(repository);
 		mopetService.home(model);
 		return "thymeleaf/home";
 	}

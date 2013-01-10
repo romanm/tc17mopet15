@@ -95,4 +95,5 @@
 <bean class="org.tc17.m15.web.ApplicationConversionServiceFactoryBean" id="applicationConversionService"/>
 <import resource="webflow-config.xml"/>
 <import resource="thymeleaf-config.xml"/>
+<import resource="jackrabbit-config.xml"/>
 </beans>

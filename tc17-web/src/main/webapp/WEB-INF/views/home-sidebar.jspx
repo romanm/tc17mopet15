@@ -4,14 +4,20 @@
 	xmlns:rg="urn:jsptagdir:/WEB-INF/tags/regime"
 	xmlns:spring="http://www.springframework.org/tags">
 
-<div>
+<p>
 	<spring:message code="ui_itIs" text="no ui_itIs"/>
-</div>
-<hr/>
+</p>
+<p>
+	<spring:message code="ui_ddd" text="ui_ddd"/>
+	<c:out value=" "/><a href="${contextPath}">JSP</a>
+	<c:out value=" "/><a href="${contextPath}/thome">Thymeleaf</a>
+</p>
+<div class="newstitle"><!-- // --></div>
+<br/>
 <div class="small">
 	<rg:language locale="en" />
 	<rg:language locale="de" />
 	<rg:language locale="ua" />
 	<rg:language locale="ru" />
-	</div>
+</div>
 </jsp:root>
