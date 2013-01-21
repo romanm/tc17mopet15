@@ -13,3 +13,6 @@ d.h. zwischen zwei Datenbanken austauschen.
 Die lokale Installation OWS3 auf einem privaten Laptop oder einem Rechner 
 in einer Klinik kann von der Demo-Installation im Internet neue oder erneuerte Behandlungsschemata 
 ablesen und diese in der lokalen Datenbank aufbewahren.
+
+Press release
+http://oncoworkstation123.wordpress.com/
