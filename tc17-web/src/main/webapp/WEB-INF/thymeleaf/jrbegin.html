@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="thymeleaf/tc17layout :: headerFragment">
+</head>
+
+<body class="tundra spring">
+  <div id="headline" th:include="thymeleaf/tc17layout :: headline">rg:headline</div>
+  <div id="content">
+  	<div>jackrabbit in prescribework</div>
+  	<span th:text="${root}"/>
+   	<span th:text="${node}"/>
+  	
+  	<!-- 
+  	<span th:text="${node.name}"/>
+  	<span th:text="${node.getProperty('message')}"/>
+  	 -->
+  </div>
+  <div id="sidebar">sidebar
+  </div>
+</body>
+</html>

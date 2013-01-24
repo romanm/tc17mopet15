@@ -1,5 +1,11 @@
 package org.tc17.m15.web;
 
+
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
+import javax.jcr.SimpleCredentials;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.jackrabbit.core.RepositoryImpl;
@@ -24,9 +30,46 @@ public class ThymeleafController extends BasisController{
 	}
 	@RequestMapping(value = "/thome", method = RequestMethod.GET)
 	public String home(Model model) {
-		log.debug(repository);
 		mopetService.home(model);
+		
 		return "thymeleaf/home";
+	}
+	@RequestMapping(value = "/jrbegin", method = RequestMethod.GET)
+	public String jrbegin(Model model) throws RepositoryException {
+		log.debug(repository);
+
+		Session session=null;
+		try {
+			session = repository.login(
+					new SimpleCredentials("admin", "admin".toCharArray()));
+			
+			Node root = session.getRootNode(); 
+			model.addAttribute("root", root);
+			
+			// Store content
+			Node hello = root.addNode("hello"); 
+			Node world = hello.addNode("world"); 
+			world.setProperty("message", "Hello, World!"); 
+			session.save(); 
+
+			// Retrieve content 
+			Node node = root.getNode("hello/world"); 
+			model.addAttribute("node", node);
+			System.out.println(node.getPath());
+			System.out.println(node.getProperty("message").getString()); 
+
+			// Remove content 
+			root.getNode("hello").remove(); 
+			session.save(); 
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		} finally { 
+//			if(null!=session) session.logout(); 
+		}
+		Node node = (Node) model.asMap().get("node");
+		log.debug(node.getPath());
+		log.debug(node.getProperty("message").getString());
+		return "thymeleaf/jrbegin";
 	}
 	// Folder
 	@RequestMapping(value = "/tfolder={idFolder}", method = RequestMethod.GET)

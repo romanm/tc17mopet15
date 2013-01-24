@@ -25,7 +25,6 @@ import org.tasclin1.mopet.domain.Folder;
 import org.tasclin1.mopet.domain.Task;
 import org.tasclin1.mopet.domain.Times;
 import org.tasclin1.mopet.domain.Tree;
-import org.tasclin1.mopet.service.MopetService;
 import org.tc17.jaxb.core.Conceptx;
 import org.tc17.jaxb.core.Dayx;
 import org.tc17.jaxb.core.Definitionx;
